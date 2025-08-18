@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 include(../pico_sdk_import.cmake)
 
-project(fortuna-io-board-demo C CXX ASM)
+project(fortuna-io-board-demo ASM C CXX)
 
 set(PICO_BOARD pico2 CACHE STRING "Board type")
 
@@ -13,8 +13,9 @@ add_subdirectory(../library build)
 add_compile_options(-O3)
 
 add_executable(${CMAKE_PROJECT_NAME}
-    demo.cc
-    toshiba_font.hh)
+    demo.cc)
+
+target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
     fortuna-io-board)

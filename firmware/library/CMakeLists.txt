@@ -7,8 +7,8 @@ string(TIMESTAMP YEAR "%Y")
 
 set(PICO_BOARD pico2 CACHE STRING "Board type" PARENT_SCOPE)
 
-set(CMAKE_CXX_STANDARD 20 PARENT_SCOPE)
-set(CMAKE_CXX_STANDARD_REQUIRED ON PARENT_SCOPE)
+set(CMAKE_C_STANDARD 23 PARENT_SCOPE)
+set(CMAKE_C_STANDARD_REQUIRED ON PARENT_SCOPE)
 
 include(../pico_sdk_import.cmake)
 pico_sdk_init()
@@ -30,12 +30,12 @@ add_library(${PROJECT_NAME} INTERFACE
 
 #add_subdirectory(contrib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
 
-pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/hsync.pio)
-pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/vsync.pio)
-pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/rgb640.pio)
-pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/rgb320.pio)
+#pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/hsync.pio)
+#pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/vsync.pio)
+#pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/rgb640.pio)
+#pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/rgb320.pio)
 
-target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_LIST_DIR}/.)
+target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 target_compile_definitions(${PROJECT_NAME} INTERFACE -DPROJECT_VERSION=\"${PROJECT_VERSION}\" -DYEAR=\"${YEAR}\")
 
 target_link_libraries(${PROJECT_NAME} INTERFACE
@@ -48,7 +48,7 @@ target_link_libraries(${PROJECT_NAME} INTERFACE
 	hardware_pwm
 	pico_aon_timer
 	pico_multicore
-	tinyusb_host
-	tinyusb_board
+    #tinyusb_host
+    #tinyusb_board
     #no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
 )
