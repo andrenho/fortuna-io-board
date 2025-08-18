@@ -3,14 +3,15 @@
 - [ ] Base (as library)
   - [ ] Example implementation 
 - [ ] VGA framebuffer
-  - [ ] Multiple resolutions
+  - [ ] Resolutions: 640x480, 640x240, 320x240, 320x240 (sprites)
 - [ ] Framebuffer primitives and text
   - [ ] Text tools
 - [ ] Keyboard / mouse / joystick
   - [ ] Mouse pointer
+- [ ] Memory available
 - [ ] SD card
 - [ ] Front panel
-- [ ] Real-time clock
+- [ ] Real-time clock (get/set)
 - [ ] Audio
 
 ## Version 2.1

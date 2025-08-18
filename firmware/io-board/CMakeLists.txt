@@ -13,7 +13,7 @@ add_subdirectory(../library build)
 add_compile_options(-O3)
 
 add_executable(${CMAKE_PROJECT_NAME}
-    demo.cc)
+        demo.c)
 
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -23,7 +23,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 pico_add_extra_outputs(${CMAKE_PROJECT_NAME})
 
 # upload remotely - see https://github.com/andrenho/remoteprog
-
 add_custom_target(upload-remote
         COMMAND remoteprog upload ${CMAKE_PROJECT_NAME}.elf
         DEPENDS ${CMAKE_PROJECT_NAME}

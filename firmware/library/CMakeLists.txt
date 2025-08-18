@@ -20,8 +20,8 @@ pico_sdk_init()
 project(fortuna-io-board VERSION 2.0)
 
 add_library(${PROJECT_NAME} INTERFACE
-		vga.h
-        vga.c
+		fortuna.h
+		fortuna.c
 )
 
 #
