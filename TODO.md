@@ -1,3 +1,33 @@
+## Version 2.0 - concurrent C version and emulator
+
+- [ ] Base (as library)
+  - [ ] Example implementation 
+- [ ] VGA framebuffer
+  - [ ] Multiple resolutions
+- [ ] Framebuffer primitives and text
+  - [ ] Text tools
+- [ ] Keyboard / mouse / joystick
+  - [ ] Mouse pointer
+- [ ] SD card
+- [ ] Front panel
+- [ ] Real-time clock
+- [ ] Audio
+
+## Version 2.1
+
+- [ ] Terminal
+- [ ] Dumb terminal mode with front panel settings
+
+## Version 2.2
+
+- [ ] Design communication language
+- [ ] External connections
+  - [ ] SPI
+  - [ ] 4-pin
+  - [ ] emulator
+
+--------------------------------------------
+
 ## Version 0.1
 
 - [x] VGA simple framebuffer (640x480)
