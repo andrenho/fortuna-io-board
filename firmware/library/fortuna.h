@@ -7,7 +7,7 @@
 
 typedef enum { UserPanel, Keyboard, Mouse, External } EventType;
 
-struct __attribute__((packed)) Event {
+typedef struct __attribute__((packed)) {
     EventType type     : 8;
     union {
         /*
@@ -17,7 +17,7 @@ struct __attribute__((packed)) Event {
         external::Buffer     external;
         */
     };
-};
+} Event;
 
 void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)());
 

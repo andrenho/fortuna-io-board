@@ -19,14 +19,16 @@ pico_sdk_init()
 
 project(fortuna-io-board VERSION 2.0)
 
-add_library(${PROJECT_NAME} INTERFACE
-		fortuna.h
-		fortuna.c
-)
+add_library(${PROJECT_NAME} INTERFACE)
 
 #
 # sources
 #
+
+target_sources(${PROJECT_NAME} INTERFACE
+		fortuna.c
+		fortuna.h
+)
 
 #add_subdirectory(contrib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
 
@@ -35,7 +37,7 @@ add_library(${PROJECT_NAME} INTERFACE
 #pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/rgb640.pio)
 #pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/rgb320.pio)
 
-target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_LIST_DIR})
 target_compile_definitions(${PROJECT_NAME} INTERFACE -DPROJECT_VERSION=\"${PROJECT_VERSION}\" -DYEAR=\"${YEAR}\")
 
 target_link_libraries(${PROJECT_NAME} INTERFACE
