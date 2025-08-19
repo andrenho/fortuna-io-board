@@ -24,7 +24,7 @@ pico_add_extra_outputs(${CMAKE_PROJECT_NAME})
 
 # upload remotely - see https://github.com/andrenho/remoteprog
 add_custom_target(upload-remote
-        COMMAND remoteprog upload ${CMAKE_PROJECT_NAME}.elf
+        COMMAND remoteprog upload -c pico2 ${CMAKE_PROJECT_NAME}.elf
         DEPENDS ${CMAKE_PROJECT_NAME}
         COMMENT "Uploading remotely..."
         VERBATIM
