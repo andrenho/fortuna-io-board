@@ -10,7 +10,7 @@ static uint16_t    event_queue_size;
 static queue_t     event_queue;
 static semaphore_t semaphore;
 
-static void     (*core1_step_function)();
+static void (*core1_step_function)();
 
 static void core1_entry();
 
@@ -35,6 +35,8 @@ static void core1_entry()
     stdio_uart_init();
     printf("==============================================================\n");
 
+    vga_init();
+
     /* TODO
     rtc::init();
     usb::init();
@@ -49,8 +51,8 @@ static void core1_entry()
     // TODO user::init_interupts();
 
     for (;;) {
+        vga_step();
         /* TODO
-        vga::step();
         usb::step();
         */
         if (core1_step_function)

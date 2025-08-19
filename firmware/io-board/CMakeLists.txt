@@ -17,6 +17,8 @@ add_executable(${CMAKE_PROJECT_NAME}
 
 target_include_directories(${CMAKE_PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
+pico_enable_stdio_uart(${CMAKE_PROJECT_NAME} 1)
+
 target_link_libraries(${CMAKE_PROJECT_NAME}
     fortuna-io-board)
 

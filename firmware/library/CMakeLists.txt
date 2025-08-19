@@ -26,8 +26,9 @@ add_library(${PROJECT_NAME} INTERFACE)
 #
 
 target_sources(${PROJECT_NAME} INTERFACE
-		fortuna.c
-		fortuna.h
+		fortuna.h 	fortuna.c
+		vga.h 		vga.c
+		color.h
 )
 
 #add_subdirectory(contrib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
@@ -39,6 +40,8 @@ pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/pio/rgb320.pi
 
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_LIST_DIR})
 target_compile_definitions(${PROJECT_NAME} INTERFACE -DPROJECT_VERSION=\"${PROJECT_VERSION}\" -DYEAR=\"${YEAR}\")
+
+pico_enable_stdio_uart(${PROJECT_NAME} 1)
 
 target_link_libraries(${PROJECT_NAME} INTERFACE
 	pico_stdlib 

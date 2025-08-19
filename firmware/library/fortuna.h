@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#include "vga.h"
+#include "color.h"
+
 #define DEFAULT_QUEUE_SIZE 64
 
 typedef enum { UserPanel, Keyboard, Mouse, External } EventType;
