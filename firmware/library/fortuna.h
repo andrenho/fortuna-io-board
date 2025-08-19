@@ -5,6 +5,7 @@
 
 #include "vga.h"
 #include "color.h"
+#include "framebuffer.h"
 
 #define DEFAULT_QUEUE_SIZE 64
 

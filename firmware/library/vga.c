@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "color.h"
+#include "framebuffer.h"
 
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
@@ -17,14 +18,11 @@
 
 typedef enum {HSYNC=16, VSYNC, LO_GRN, HI_GRN, BLUE_PIN, RED_PIN} VgaPins;
 
-// VGA mode
-static uint16_t screen_width;
-static uint16_t screen_height;
-static VgaMode  current_mode;
-
 // VGA framebuffer
-static uint8_t* data_array = NULL;
 static void* address_pointer = NULL;
+
+// framebuffer
+static Framebuffer* fb = NULL;
 
 // DMA channels and PIO program offsets
 static int rgb_chan_0, rgb_chan_1;
@@ -35,9 +33,6 @@ static pio_program_t const* current_rgb_program = nullptr;
 static uint16_t current_scanline = 0;
 static uint8_t  current_framebuffer = 0;
 static volatile bool new_vsync = false;
-
-// framebuffer size in mode 4
-constexpr uint32_t FRAMEBUFFER_SZ = 320 * 240 / 2;
 
 // state machines
 static const uint HSYNC_SM = 0;
@@ -75,18 +70,21 @@ static const uint16_t __in_flash() mouse_pointer[] = {
     0b1111101010101010,
 };
 
+// TODO - move to fb?
 static __attribute__((always_inline)) inline uint32_t pixel_idx(uint16_t x, uint16_t y, uint8_t framebuffer)
 {
-    switch (current_mode) {
-        case V_640x480:
+    if (fb->w == 640) {
+        if (fb->h == 480)
             return (640 >> 1) * y + (x >> 1);
-        case V_640x240:
+        if (fb->w == 240)
             return (640 >> 1) * (y >> 1) + (x >> 1);
-        case V_320x240:
-            return (320 >> 1) * (y >> 1) + (x >> 1);
-        case V_SPRITES:
-            return (320 >> 1) * (y >> 1) + (x >> 1) + (framebuffer * FRAMEBUFFER_SZ);
+    } else if (fb->w == 320) {
+        return (320 >> 1) * (y >> 1) + (x >> 1);
     }
+
+    // TODO - sprites?
+    // return (320 >> 1) * (y >> 1) + (x >> 1) + (framebuffer * FRAMEBUFFER_SZ);
+
     return 0;
 }
 
@@ -101,17 +99,19 @@ static void dma_handler()   // DMA handler is called at the end of each HSYNC
     if (current_scanline >= 480) {       // last scanline?
         current_scanline = 0;            // restart scanline
 
+        /* TODO
         if (current_mode == V_SPRITES)
             current_framebuffer = (current_framebuffer == 1) ? 2 : 1;
+        */
 
         new_vsync = true;
     }
 
-    int16_t mouse_diff = current_scanline / (screen_height == 240 ? 2 : 1) - (int) mouse_y;
+    int16_t mouse_diff = current_scanline / (fb->h == 240 ? 2 : 1) - (int) mouse_y;
     if (show_mouse_pointer && mouse_diff >= 0 && mouse_diff < CURSOR_HEIGHT) {
-        address_pointer = &vga_data_array_mouse[mouse_diff * (screen_width >> 1)];
+        address_pointer = &vga_data_array_mouse[mouse_diff * (fb->w >> 1)];
     } else {
-        address_pointer = &data_array[pixel_idx(0, current_scanline, current_framebuffer)];
+        address_pointer = &fb->data[pixel_idx(0, current_scanline, current_framebuffer)];
     }
 }
 
@@ -129,8 +129,8 @@ static void init_dma()
         rgb_chan_0,                 // Channel to be configured
         &c0,                        // The configuration we just created
         &pio0->txf[RGB_SM],         // write address (RGB PIO TX FIFO)
-        &data_array,                // The initial read address (pixel color array)
-        screen_width / 2,           // Number of transfers; in this case each is 1 byte.
+        &fb->data,                  // The initial read address (pixel color array)
+        fb->w / 2,                  // Number of transfers; in this case each is 1 byte.
         false                       // Don't start immediately.
     );
 
@@ -177,7 +177,7 @@ static void initialize_pio()
     // initialize PIO state machine counters.
     pio_sm_put_blocking(pio0, HSYNC_SM, H_ACTIVE);
     pio_sm_put_blocking(pio0, VSYNC_SM, V_ACTIVE);
-    pio_sm_put_blocking(pio0, RGB_SM, (screen_width / 2) - 1);
+    pio_sm_put_blocking(pio0, RGB_SM, (fb->w / 2) - 1);
 
     // claim DMA channels
     rgb_chan_0 = dma_claim_unused_channel(true);
@@ -193,16 +193,19 @@ static void initialize_pio()
 
 static void draw_mouse_pointer(uint16_t x, uint16_t y, uint8_t color)
 {
+    /*
     const int pixel = ((screen_width * y) + x) ;
     if (pixel & 1)
         vga_data_array_mouse[pixel>>1] = (vga_data_array_mouse[pixel>>1] & TOPMASK) | (color << 4) ;
     else
         vga_data_array_mouse[pixel>>1] = (vga_data_array_mouse[pixel>>1] & BOTTOMMASK) | color;
+    */
 }
 
 
 static void update_mouse_pointer()
 {
+    /*
     if (show_mouse_pointer) {
         mouse_x = MIN(MAX(mouse_x + next_mouse_x, 0), screen_width - 1);
         mouse_y = MIN(MAX(mouse_y + next_mouse_y, 0), screen_height - 1);
@@ -223,35 +226,35 @@ static void update_mouse_pointer()
             }
         }
     }
+    */
 }
 
 
 static void copy_sprites_vsync()
 {
+    /* TODO
     if (current_mode == V_SPRITES) {
         // copy framebuffer 0 on top of current framebuffer
         uint8_t opposite_framebuffer = (current_framebuffer == 1) ? 2 : 1;
         memcpy(&data_array[pixel_idx(0, 0, opposite_framebuffer)], &data_array[0], FRAMEBUFFER_SZ);
 
         // add sprites
-        /* TODO
         for (uint16_t i = 0; i < sprite_sz; ++i)
             fb::draw_image(*sprites[i].image, sprites[i].x, sprites[i].y, opposite_framebuffer);
-        */
     }
+    */
 }
-
 
 
 void vga_init()
 {
-    // initialize in 640x480
-    screen_width = 640;
-    screen_height = 480;
-    current_mode = V_640x480;
+    fb = fb_new(640, 480);
+    address_pointer = &fb->data[0];
 
-    data_array = calloc(1, screen_width * screen_height / 2);
-    address_pointer = &data_array[0];
+    // fb->data[10 * 640 + 10] = C_WHITE;
+    fb_set_pixel(fb, 10, 10, C_WHITE);
+    fb_set_pixel(fb, 10, 11, C_WHITE);
+    fb_set_pixel(fb, 11, 11, C_WHITE);
 
     initialize_pio();
 

@@ -1,9 +1,10 @@
 ## Version 2.0 - concurrent C version and emulator
 
-- [ ] Base (as library)
-  - [ ] Example implementation 
-- [ ] VGA framebuffer
-  - [ ] Resolutions: 640x480, 640x240, 320x240, 320x240 (sprites)
+- [x] Base (as library)
+  - [x] Example implementation 
+- [x] VGA framebuffer
+  - [ ] Resolutions: 640x480, 640x240, 320x240, 320x240
+  - [ ] Sprites
 - [ ] Framebuffer primitives and text
   - [ ] Text tools
 - [ ] Keyboard / mouse / joystick

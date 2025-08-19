@@ -26,8 +26,9 @@ add_library(${PROJECT_NAME} INTERFACE)
 #
 
 target_sources(${PROJECT_NAME} INTERFACE
-		fortuna.h 	fortuna.c
-		vga.h 		vga.c
+		fortuna.h 	   fortuna.c
+		vga.h 		   vga.c
+		framebuffer.h  framebuffer.c
 		color.h
 )
 
