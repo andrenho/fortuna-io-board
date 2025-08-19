@@ -15,7 +15,7 @@ add_compile_options(-O3)
 add_executable(${CMAKE_PROJECT_NAME}
         demo.c)
 
-target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${CMAKE_PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
     fortuna-io-board)
