@@ -3,12 +3,12 @@
 - [x] Base (as library)
   - [x] Example implementation 
 - [x] VGA framebuffer
-  - [ ] Framebuffer primitives
-  - [ ] Change resolution
+  - [x] Framebuffer primitives
 - [ ] Framebuffer primitives and text
   - [ ] Text tools
 - [ ] Keyboard / mouse / joystick
   - [ ] Mouse pointer
+- [ ] Change resolution
 - [ ] Memory available
 - [ ] SD card
 - [ ] Front panel
