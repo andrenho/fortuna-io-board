@@ -1,6 +1,7 @@
 #include "vga.h"
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -15,10 +16,10 @@ static Texture2D texture;
 
 void vga_init()
 {
-    vga_set_mode(V_640x480);
-
-    InitWindow(fb->w * 2, fb->h * 2, "fortuna-io-board emulator");
+    InitWindow(640 * 2, 480 * 2, "fortuna-io-board emulator");
     SetTargetFPS(60);
+
+    vga_set_mode(V_640x480);
 }
 
 static void convert_framebuffer_to_32()
@@ -57,6 +58,11 @@ void vga_set_mode(VgaMode mode)
 
 void vga_step()
 {
+    static char title[255];
+    int fps = GetFPS();
+    snprintf(title, sizeof title, "fortuna-io-board emulator - FPS %d", fps);
+    SetWindowTitle(title);
+
     BeginDrawing();
     ClearBackground(BLACK);
 
