@@ -20,7 +20,7 @@ void fb_delete(Framebuffer* fb)
     free(fb);
 }
 
-static void __attribute__((always_inline)) inline inline_draw_pixel(Framebuffer* fb, uint16_t x, uint16_t y, Color color)
+static void __attribute__((always_inline)) inline inline_draw_pixel(Framebuffer* fb, uint16_t x, uint16_t y, FColor color)
 {
     const uint32_t fb_idx = 0; // (fb->w * fb->h) >> 1;0
 
@@ -38,7 +38,7 @@ static void __attribute__((always_inline)) inline inline_draw_pixel(Framebuffer*
         fb->data[fb_idx + (pixel>>1)] = (fb->data[fb_idx + (pixel>>1)] & BOTTOMMASK) | ((uint8_t) color) ;
 }
 
-void fb_set_pixel(Framebuffer* fb, int16_t x, int16_t y, Color color)
+void fb_set_pixel(Framebuffer* fb, int16_t x, int16_t y, FColor color)
 {
     if (x < 0 || y < 0 || x >= fb->w || y >= fb->h)
         return;

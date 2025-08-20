@@ -20,6 +20,10 @@ FetchContent_MakeAvailable(raylib)
 add_library(${PROJECT_NAME} STATIC
         fortuna.h
         fortuna.c
+        framebuffer.h
+        framebuffer.c
+        vga.h
+        vga.c
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}" "${raylib_SOURCE_DIR}/src")

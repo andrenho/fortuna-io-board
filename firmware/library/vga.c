@@ -270,3 +270,9 @@ void vga_step()
         new_vsync = false;
     }
 }
+
+struct Framebuffer* vga_framebuffer()
+{
+    return fb;
+}
+

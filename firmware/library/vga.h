@@ -9,6 +9,8 @@ void vga_init();
 void vga_set_mode(VgaMode mode);
 void vga_step();
 
+struct Framebuffer* vga_framebuffer();
+
 // void set_sprites(Sprite* sprites, uint16_t sz);
 // void update_mouse_position(int8_t x, int8_t y);
 

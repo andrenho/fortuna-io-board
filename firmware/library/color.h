@@ -4,6 +4,6 @@
 typedef enum {
     C_BLACK = 0, C_NAVY_BLUE, C_DARK_GREEN, C_BLUE, C_GREEN, C_SKY_BLUE, C_LIME, C_CYAN,
     C_RED, C_MAGENTA, C_DARK_ORANGE, C_VIOLET, C_ORANGE, C_PINK, C_YELLOW, C_WHITE
-} Color;
+} FColor;
 
 #endif //COLOR_H
