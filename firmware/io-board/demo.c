@@ -5,4 +5,5 @@
 int main()
 {
     fortuna_init(DEFAULT_QUEUE_SIZE, NULL);
+    fb_set_pixel(vga_framebuffer(), 10, 10, C_WHITE);
 }
