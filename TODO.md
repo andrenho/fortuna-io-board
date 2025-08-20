@@ -3,8 +3,8 @@
 - [x] Base (as library)
   - [x] Example implementation 
 - [x] VGA framebuffer
-  - [ ] Resolutions: 640x480, 640x240, 320x240, 320x240
-  - [ ] Sprites
+  - [ ] Framebuffer primitives
+  - [ ] Change resolution
 - [ ] Framebuffer primitives and text
   - [ ] Text tools
 - [ ] Keyboard / mouse / joystick
@@ -17,6 +17,7 @@
 
 ## Version 2.1
 
+- [ ] Sprites
 - [ ] Terminal
 - [ ] Dumb terminal mode with front panel settings
 
