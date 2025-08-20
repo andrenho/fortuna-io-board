@@ -11,8 +11,27 @@
 
 static Framebuffer* fb = NULL;
 
-static uint8_t*  fb32 = NULL;
+static Color*    fb32 = NULL;
 static Texture2D texture;
+
+static Color palette[] = {
+    { 0x00, 0x00, 0x00, 0xff },  // black
+    { 0x00, 0x00, 0x80, 0xff },  // navy blue
+    { 0x00, 0x64, 0x00, 0xff },  // dark green
+    { 0x1e, 0x09, 0xff, 0xff },  // blue
+    { 0x00, 0x80, 0x00, 0xff },  // green
+    { 0x87, 0xce, 0xeb, 0xff },  // sky blue
+    { 0x00, 0xff, 0x00, 0xff },  // lime
+    { 0x00, 0xff, 0xff, 0xff },  // cyan
+    { 0xff, 0x00, 0x00, 0xff },  // red
+    { 0xff, 0x00, 0xff, 0xff },  // magenta
+    { 0xff, 0x8c, 0x00, 0xff },  // dark orange
+    { 0xee, 0x82, 0xee, 0xff },  // violet
+    { 0xff, 0xa5, 0x00, 0xff },  // orange
+    { 0xff, 0xc0, 0xcb, 0xff },  // pink
+    { 0xff, 0xff, 0x00, 0xff },  // yellow
+    { 0xe0, 0xe0, 0xe0, 0xff },  // white
+};
 
 void vga_init()
 {
@@ -24,7 +43,10 @@ void vga_init()
 
 static void convert_framebuffer_to_32()
 {
-    memset(fb32, 0xff, fb->w * fb->h * 4);  // TODO
+    for (size_t i = 0, j = 0; i < (fb->w * fb->h); ++i) {
+        fb32[j++] = palette[fb->data[i] >> 4];
+        fb32[j++] = palette[fb->data[i] & 0xf];
+    }
 }
 
 void vga_set_mode(VgaMode mode)
@@ -42,7 +64,7 @@ void vga_set_mode(VgaMode mode)
     free(fb32);
 
     fb = fb_new(w, h);  // actual framebuffer
-    fb32 = calloc(4, w * h);
+    fb32 = calloc(sizeof(Color), w * h);
     convert_framebuffer_to_32();
 
     Image image = {
@@ -69,7 +91,10 @@ void vga_step()
     convert_framebuffer_to_32();
     UpdateTexture(texture, fb32);
 
-    DrawTexture(texture, 0, 0, WHITE);
+    Rectangle src = { 0.f, 0.f, fb->w, fb->h };
+    Rectangle dest = { 0.f, 0.f, GetScreenWidth(), GetScreenHeight() };
+
+    DrawTexturePro(texture, src, dest, (Vector2) { 1, 1 }, 0.f, WHITE);
 
     EndDrawing();
 }
