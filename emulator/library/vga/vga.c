@@ -68,7 +68,7 @@ void vga_set_mode(VgaMode mode)
     convert_framebuffer_to_32();
 
     texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, w, h);
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+    // SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 }
 
 void vga_step()
