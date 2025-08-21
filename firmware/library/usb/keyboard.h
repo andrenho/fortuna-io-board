@@ -1,7 +1,13 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-#include "tusb.h"
+#include <stdint.h>
+
+#ifdef FIRMWARE
+#  include "tusb.h"
+#else
+  typedef struct {} hid_keyboard_report_t;
+#endif
 
 typedef struct __attribute__((packed)) KeyboardEvent {
     uint8_t hid_key;   // see tinyusb/src/class/hid/hid.h line 366
