@@ -12,7 +12,7 @@ static size_t event_queue_max_sz;
 void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)())
 {
     event_queue = calloc(sizeof(Event), event_queue_size);
-    event_queue_size = 0;
+    event_queue_sz = 0;
     event_queue_max_sz = event_queue_size;
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
@@ -26,6 +26,20 @@ static void emulator_ui_events()
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_EVENT_QUIT)
             exit(0);
+        if (e.type == SDL_EVENT_KEY_UP || e.type == SDL_EVENT_KEY_DOWN) {
+            Event ev = {
+                .type = E_KEYBOARD,
+                .key = (KeyboardEvent) {
+                    .hid_key = e.key.raw,
+                    .chr = e.key.key,
+                    .ctrl = e.key.mod & SDL_KMOD_CTRL,
+                    .alt = e.key.mod & SDL_KMOD_ALT,
+                    .shift = e.key.mod & SDL_KMOD_SHIFT,
+                    .pressed = e.key.down,
+                }
+            };
+            fortuna_add_event(&ev);
+        }
     }
 }
 
