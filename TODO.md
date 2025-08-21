@@ -6,7 +6,7 @@
   - [x] Framebuffer primitives
 - [x] Framebuffer primitives and text
   - [x] Text tools
-- [ ] Keyboard / mouse / joystick
+- [x] Keyboard / mouse / joystick
   - [ ] Mouse pointer
 - [ ] Change resolution
 - [ ] Memory available
