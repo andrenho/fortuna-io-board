@@ -64,7 +64,7 @@ static void core1_entry()
 
 bool fortuna_add_event(Event const* event)
 {
-    return queue_try_add(&event_queue, &event);
+    return queue_try_add(&event_queue, event);
 }
 
 bool fortuna_next_event(Event* event)

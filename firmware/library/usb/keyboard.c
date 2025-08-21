@@ -48,7 +48,7 @@ static uint8_t keychar(hid_keyboard_report_t const* report, uint8_t i)
 
 static void fire_event(hid_keyboard_report_t const* report, uint8_t i, bool pressed)
 {
-    fortuna_add_event(&(Event) {
+    Event e = {
         .type = E_KEYBOARD,
         .key = (KeyboardEvent) {
             .hid_key = report->keycode[i],
@@ -58,7 +58,8 @@ static void fire_event(hid_keyboard_report_t const* report, uint8_t i, bool pres
             .shift = (bool) (report->modifier & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT)),
             .pressed = pressed,
         }
-    });
+    };
+    fortuna_add_event(&e);
 }
 
 void keyboard_process_report(hid_keyboard_report_t const* report)
