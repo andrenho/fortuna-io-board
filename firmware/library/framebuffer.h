@@ -6,6 +6,8 @@
 #include "color.h"
 #include "font.h"
 
+#define DEFAULT_FONT NULL
+
 typedef struct Framebuffer {
     uint16_t w;
     uint16_t h;
