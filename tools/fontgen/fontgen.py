@@ -52,7 +52,7 @@ def bitmap_to_cheader(image_path, cell_width, cell_height, horizontal_cells, ini
         f.write("#include \"font.h\"\n\n")
 
         # Write font metadata
-        f.write(f"static const Font IN_FLASH {base_name}_font = {{\n\n")
+        f.write(f"static const FFont IN_FLASH {base_name}_font = {{\n\n")
         f.write(f"    .char_width  = {cell_width},\n")
         f.write(f"    .char_height = {cell_height},\n")
         f.write(f"    .first_char  = {initial_char},\n")

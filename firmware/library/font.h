@@ -9,6 +9,6 @@ typedef struct {
     uint8_t  first_char;
     uint8_t  last_char;
     uint8_t* pixels;
-} Font;
+} FFont;
 
 #endif

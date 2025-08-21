@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "fortuna_font.h"
+
 #define TOPMASK    0b00001111
 #define BOTTOMMASK 0b11110000
 
@@ -332,4 +334,35 @@ void fb_move_screen_up(Framebuffer* fb, uint16_t lines, FColor fill_color)
 
     memmove(fb->data, &fb->data[sz], vga_sz - sz);
     memset(&fb->data[vga_sz - sz], color_data, sz);
+}
+
+static void draw_from_byte_bg(Framebuffer* fb, uint8_t byte, uint8_t n_bytes, uint16_t x, uint16_t y, FColor bg_color, FColor fg_color)
+{
+    for (int m = 0; m < n_bytes; ++m) {
+        uint8_t v = byte & (1 << (n_bytes - m - 1));
+        inline_draw_pixel(fb, x + m, y, v ? fg_color : bg_color);
+    }
+}
+
+static void draw_from_byte(Framebuffer* fb, uint8_t byte, uint8_t n_bytes, uint16_t x, uint16_t y, FColor fg_color)
+{
+    for (int m = 0; m < n_bytes; ++m) {
+        uint8_t v = byte & (1 << (n_bytes - m - 1));
+        if (v)
+            inline_draw_pixel(fb, x + m, y, fg_color);
+    }
+}
+
+void fb_draw_character_bg(Framebuffer* fb, uint16_t px, uint16_t py, FFont const* font, uint8_t ch, FColor bg_color, FColor fg_color)
+{
+    uint8_t* pixel = &font->pixels[(ch - font->first_char) * font->char_height];
+    for (uint8_t y = 0; y < font->char_height; ++y)
+        draw_from_byte_bg(fb, *(pixel + y), font->char_width, px, py + y, bg_color, fg_color);
+}
+
+void fb_draw_character(Framebuffer* fb, uint16_t px, uint16_t py, FFont const* font, uint8_t ch, FColor fg_color)
+{
+    uint8_t* pixel = &font->pixels[(ch - font->first_char) * font->char_height];
+    for (uint8_t y = 0; y < font->char_height; ++y)
+        draw_from_byte(fb, *(pixel + y), font->char_width, px, py + y, fg_color);
 }
