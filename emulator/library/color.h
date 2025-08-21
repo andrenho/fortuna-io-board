@@ -1,1 +1,0 @@
-../../firmware/library/color.h

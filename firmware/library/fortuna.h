@@ -4,10 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "vga.h"
-#include "color.h"
-#include "framebuffer.h"
-#include "font.h"
+#include "vga/vga.h"
+#include "vga/color.h"
+#include "vga/framebuffer.h"
+#include "vga/font.h"
 
 #define DEFAULT_QUEUE_SIZE 64
 

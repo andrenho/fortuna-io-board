@@ -26,21 +26,22 @@ add_library(${PROJECT_NAME} INTERFACE)
 #
 
 target_sources(${PROJECT_NAME} INTERFACE
-		color.h
-		font.h         fortuna_font.h
-		fortuna.h 	   fortuna.c
-		vga.h 		   vga.c
-		framebuffer.h  framebuffer.c
+		fortuna.h			fortuna.c
+		vga/color.h
+		vga/font.h			vga/fortuna_font.h
+		vga/vga.h 			vga/vga.c
+		vga/framebuffer.h  	vga/framebuffer.c
+		usb/tusb_config.h
 )
 
 #add_subdirectory(contrib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
 
-pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/pio/hsync.pio)
-pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/pio/vsync.pio)
-pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/pio/rgb640.pio)
-pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/pio/rgb320.pio)
+pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/hsync.pio)
+pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/vsync.pio)
+pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/rgb640.pio)
+pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/rgb320.pio)
 
-target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_LIST_DIR} "${CMAKE_CURRENT_LIST_DIR}/usb")
 target_compile_definitions(${PROJECT_NAME} INTERFACE -DPROJECT_VERSION=\"${PROJECT_VERSION}\" -DYEAR=\"${YEAR}\" -DFIRMWARE=1)
 
 pico_enable_stdio_uart(${PROJECT_NAME} 1)
@@ -55,7 +56,7 @@ target_link_libraries(${PROJECT_NAME} INTERFACE
 	hardware_pwm
 	pico_aon_timer
 	pico_multicore
-    #tinyusb_host
-    #tinyusb_board
+    tinyusb_host
+    tinyusb_board
     #no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
 )

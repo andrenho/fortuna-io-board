@@ -4,8 +4,8 @@
   - [x] Example implementation 
 - [x] VGA framebuffer
   - [x] Framebuffer primitives
-- [ ] Framebuffer primitives and text
-  - [ ] Text tools
+- [x] Framebuffer primitives and text
+  - [x] Text tools
 - [ ] Keyboard / mouse / joystick
   - [ ] Mouse pointer
 - [ ] Change resolution
