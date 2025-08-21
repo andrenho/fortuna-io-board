@@ -251,11 +251,6 @@ void vga_init()
     fb = fb_new(640, 480);
     address_pointer = &fb->data[0];
 
-    // fb->data[10 * 640 + 10] = C_WHITE;
-    fb_set_pixel(fb, 10, 10, C_WHITE);
-    fb_set_pixel(fb, 10, 11, C_WHITE);
-    fb_set_pixel(fb, 11, 11, C_WHITE);
-
     initialize_pio();
 
     printf("VGA initialized.\n");
@@ -276,3 +271,12 @@ struct Framebuffer* vga_framebuffer()
     return fb;
 }
 
+int vga_width()
+{
+    return fb->w;
+}
+
+int vga_height()
+{
+    return fb->h;
+}

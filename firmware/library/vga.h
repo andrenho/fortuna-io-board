@@ -9,6 +9,9 @@ void vga_init();
 void vga_set_mode(VgaMode mode);
 void vga_step();
 
+int vga_width();
+int vga_height();
+
 struct Framebuffer* vga_framebuffer();
 
 // void set_sprites(Sprite* sprites, uint16_t sz);

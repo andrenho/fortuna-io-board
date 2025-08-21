@@ -99,7 +99,17 @@ void vga_step()
     EndDrawing();
 }
 
-struct Framebuffer* vga_framebuffer()
+Framebuffer* vga_framebuffer()
 {
     return fb;
+}
+
+int vga_width()
+{
+    return fb->w;
+}
+
+int vga_height()
+{
+    return fb->h;
 }
