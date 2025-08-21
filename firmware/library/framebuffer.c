@@ -28,8 +28,6 @@ static void __attribute__((always_inline)) inline inline_draw_pixel(Framebuffer*
     // Which pixel is it?
     const int pixel = ((fb->w * y) + x) ;
 
-    printf("%d\n", pixel);
-
     // Is this pixel stored in the first 4 bits
     // of the vga data array index, or the second
     // 4 bits? Check, then mask.
