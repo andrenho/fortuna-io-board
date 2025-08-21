@@ -5,16 +5,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "raylib.h"
-
 #include "framebuffer.h"
+
+#include "SDL3/SDL.h"
 
 static Framebuffer* fb = NULL;
 
-static Color*    fb32 = NULL;
-static Texture2D texture;
+static SDL_Window*   window = NULL;
+static SDL_Renderer* ren = NULL;
+static SDL_Color*    fb32 = NULL;
+static SDL_Texture*  texture = NULL;
 
-static Color palette[] = {
+static SDL_Color palette[] = {
     { 0x00, 0x00, 0x00, 0xff },  // black
     { 0x00, 0x00, 0xe0, 0xff },  // navy blue
     { 0x00, 0x64, 0x00, 0xff },  // dark green
@@ -35,9 +37,7 @@ static Color palette[] = {
 
 void vga_init()
 {
-    InitWindow(640 * 2, 480 * 2, "fortuna-io-board emulator");
-    SetTargetFPS(60);
-
+    SDL_CreateWindowAndRenderer("fortuna-io-board emulator", 640 * 2, 480 * 2, 0, &window, &ren);
     vga_set_mode(V_640x480);
 }
 
@@ -58,45 +58,37 @@ void vga_set_mode(VgaMode mode)
         case V_320x240: w = 320; h = 240; break;
     }
 
-    if (IsTextureValid(texture))
-        UnloadTexture(texture);
+    if (texture)
+        SDL_DestroyTexture(texture);
     fb_delete(fb);
     free(fb32);
 
     fb = fb_new(w, h);  // actual framebuffer
-    fb32 = calloc(sizeof(Color), w * h);
+    fb32 = calloc(sizeof(SDL_Color), w * h);
     convert_framebuffer_to_32();
 
-    Image image = {
-        .data = fb32,
-        .width = w,
-        .height = h,
-        .mipmaps = 1,
-        .format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,
-    };
-
-    texture = LoadTextureFromImage(image);
+    texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, w, h);
+    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 }
 
 void vga_step()
 {
+    /*
     static char title[255];
-    int fps = GetFPS();
+    int fps = SDL_GetPerformanceFrequency();
     snprintf(title, sizeof title, "fortuna-io-board emulator - FPS %d", fps);
-    SetWindowTitle(title);
+    SDL_SetWindowTitle(window, title);
+    */
 
-    BeginDrawing();
-    ClearBackground(BLACK);
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderFillRect(ren, NULL);
 
     convert_framebuffer_to_32();
-    UpdateTexture(texture, fb32);
+    SDL_UpdateTexture(texture, NULL, fb32, fb->w * 4);
 
-    Rectangle src = { 0.f, 0.f, fb->w, fb->h };
-    Rectangle dest = { 0.f, 0.f, GetScreenWidth(), GetScreenHeight() };
+    SDL_RenderTexture(ren, texture, NULL, NULL);
 
-    DrawTexturePro(texture, src, dest, (Vector2) { 1, 1 }, 0.f, WHITE);
-
-    EndDrawing();
+    SDL_RenderPresent(ren);
 }
 
 Framebuffer* vga_framebuffer()
