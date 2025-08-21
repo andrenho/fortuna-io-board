@@ -36,6 +36,7 @@ static void core1_entry()
     printf("==============================================================\n");
 
     vga_init();
+    usb_init();
 
     /* TODO
     rtc::init();
@@ -52,9 +53,7 @@ static void core1_entry()
 
     for (;;) {
         vga_step();
-        /* TODO
-        usb::step();
-        */
+        usb_step();
         if (core1_step_function)
             core1_step_function();
         else

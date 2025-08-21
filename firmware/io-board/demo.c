@@ -18,12 +18,25 @@ int main()
     for (uint8_t i = 0; i < 16; ++i)
         fb_draw_rectangle_filled(vga_framebuffer(), sq_width * i + 10, 20, sq_width - 10, sq_height, i);
 
-    fb_draw_character(vga_framebuffer(), 10, 50, DEFAULT_FONT, 'A', C_YELLOW);
+    int cw = 0;
 
     for (;;) {
         Event e;
         while (fortuna_next_event(&e)) {
-
+            switch (e.type) {
+                case E_KEYBOARD:
+                    if (e.key.pressed) {
+                        fb_draw_character(vga_framebuffer(), cw, 60, DEFAULT_FONT, e.key.chr, C_WHITE);
+                        cw += 7;
+                    }
+                    break;
+                case E_USER_PANEL:
+                    break;
+                case E_MOUSE:
+                    break;
+                case E_EXTERNAL:
+                    break;
+            }
         }
     }
 }

@@ -31,6 +31,8 @@ target_sources(${PROJECT_NAME} INTERFACE
 		vga/font.h			vga/fortuna_font.h
 		vga/vga.h 			vga/vga.c
 		vga/framebuffer.h  	vga/framebuffer.c
+		usb/usb.h			usb/usb.c
+		usb/keyboard.h      usb/keyboard.c
 		usb/tusb_config.h
 )
 

@@ -8,14 +8,17 @@
 #include "vga/color.h"
 #include "vga/framebuffer.h"
 #include "vga/font.h"
+#include "usb/usb.h"
+#include "usb/keyboard.h"
 
 #define DEFAULT_QUEUE_SIZE 64
 
-typedef enum { UserPanel, Keyboard, Mouse, External } EventType;
+typedef enum { E_USER_PANEL, E_KEYBOARD, E_MOUSE, E_EXTERNAL } EventType;
 
 typedef struct __attribute__((packed)) {
     EventType type     : 8;
     union {
+        KeyboardEvent key;
         /*
         user::Event          user;
         usb::keyboard::Event key;
