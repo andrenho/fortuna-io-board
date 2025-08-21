@@ -43,7 +43,7 @@ void vga_init()
 
 static void convert_framebuffer_to_32()
 {
-    for (size_t i = 0, j = 0; i < (fb->w * fb->h); ++i) {
+    for (size_t i = 0, j = 0; i < (fb->w * fb->h / 2); ++i) {
         fb32[j++] = palette[fb->data[i] & 0xf];
         fb32[j++] = palette[fb->data[i] >> 4];
     }
