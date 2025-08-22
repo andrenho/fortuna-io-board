@@ -10,6 +10,7 @@
 #include "vga/font.h"
 #include "usb/usb.h"
 #include "usb/keyboard.h"
+#include "usb/mouse.h"
 
 #define DEFAULT_QUEUE_SIZE 64
 
@@ -19,10 +20,9 @@ typedef struct __attribute__((packed)) {
     EventType type     : 8;
     union {
         KeyboardEvent key;
+        MouseEvent    mouse;
         /*
         user::Event          user;
-        usb::keyboard::Event key;
-        usb::mouse::Event    mouse;
         external::Buffer     external;
         */
     };

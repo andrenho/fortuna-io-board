@@ -3,9 +3,7 @@
 #include <tusb.h>
 #include <bsp/board.h>
 
-/*
-#include "mouse.hh"
-*/
+#include "usb/mouse.h"
 #include "usb/keyboard.h"
 
 void usb_init()
@@ -49,7 +47,7 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
     if (itf_protocol == HID_ITF_PROTOCOL_KEYBOARD)
         keyboard_init(dev_addr, instance);
     else if (itf_protocol == HID_ITF_PROTOCOL_MOUSE)
-        ; // TODO - usb::mouse::init(dev_addr, instance);
+        mouse_init(dev_addr, instance);
 
     if (!tuh_hid_receive_report(dev_addr, instance)) {
         printf("Error: cannot request to receive report\r\n");
@@ -70,7 +68,7 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
             keyboard_process_report((hid_keyboard_report_t const*) report);
             break;
         case HID_ITF_PROTOCOL_MOUSE:
-            // TODO - usb::mouse::process_report((hid_mouse_report_t const*) report);
+            mouse_process_report((hid_mouse_report_t const*) report);
             break;
         default:
             break;

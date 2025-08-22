@@ -37,4 +37,18 @@ void         fb_draw_character(Framebuffer* fb, uint16_t x, uint16_t y, FFont co
 
 // void fb_setup(ScreenMode mode);
 
+static __attribute__((always_inline)) inline uint32_t fb_pixel_idx(Framebuffer* fb, uint16_t x, uint16_t y)
+{
+    if (fb->w == 640) {
+        if (fb->h == 480)
+            return (640 >> 1) * y + (x >> 1);
+        if (fb->h == 240)
+            return (640 >> 1) * (y >> 1) + (x >> 1);
+    } else if (fb->w == 320) {
+        return (320 >> 1) * (y >> 1) + (x >> 1);
+    }
+
+    return 0;
+}
+
 #endif //FRAMEBUFFER_H

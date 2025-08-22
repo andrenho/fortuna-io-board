@@ -20,6 +20,7 @@
 - [ ] Sprites
 - [ ] Terminal
 - [ ] Dumb terminal mode with front panel settings
+- [ ] Update README.md, documentation
 
 ## Version 2.2
 

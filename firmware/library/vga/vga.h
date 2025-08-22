@@ -1,6 +1,7 @@
 #ifndef VGA_H
 #define VGA_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 typedef enum { V_640x480, V_640x240, V_320x240 } VgaMode;
@@ -11,6 +12,10 @@ void vga_step();
 
 int vga_width();
 int vga_height();
+
+void vga_show_pointer(bool v);
+void vga_set_pointer(uint16_t x, uint16_t y);
+void vga_move_pointer(int8_t x, int8_t y);
 
 struct Framebuffer* vga_framebuffer();
 

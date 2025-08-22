@@ -12,6 +12,9 @@ int main()
     fb_set_pixel(vga_framebuffer(), vga_width() - 1, 0, C_NAVY_BLUE);
     fb_set_pixel(vga_framebuffer(), vga_width() - 1, vga_height() - 1, C_NAVY_BLUE);
 
+    // mouse
+    vga_show_pointer(true);
+
     // draw colors
     uint16_t sq_width = vga_width() / 17;
     uint16_t sq_height = vga_height() / 16;
