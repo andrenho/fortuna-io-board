@@ -20,4 +20,7 @@ void terminal_show_cursor(bool v);
 uint8_t terminal_columns();
 uint8_t terminal_rows();
 
+bool terminal_active();
+void terminal_resize();
+
 #endif

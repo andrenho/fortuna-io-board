@@ -162,6 +162,17 @@ void terminal_start(FFont const* font_)
     add_blink_timer();
 }
 
+void terminal_resize()
+{
+    columns = MAX(80, (vga_width() / font->char_width));
+    lines = MAX(25, (vga_height() / font->char_height));
+
+    rx = (vga_width() / 2) - (columns * font->char_width / 2);
+    ry = (vga_height() / 2) - (lines * font->char_height / 2);
+
+    tmt_resize(vt, columns, lines);
+}
+
 void terminal_putc(uint8_t c)
 {
     tmt_write(vt, (const char *) &c, 1);
@@ -239,4 +250,9 @@ uint8_t terminal_columns()
 uint8_t terminal_rows()
 {
     return tmt_screen(vt)->nline;
+}
+
+bool terminal_active()
+{
+    return vt != NULL;
 }

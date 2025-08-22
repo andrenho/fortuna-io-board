@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <terminal/terminal.h>
 
 #include "color.h"
 #include "framebuffer.h"
@@ -20,6 +21,7 @@ typedef enum {HSYNC=16, VSYNC, LO_GRN, HI_GRN, BLUE_PIN, RED_PIN} VgaPins;
 
 // VGA framebuffer
 static void* address_pointer = NULL;
+static VgaMode current_mode;
 
 // framebuffer
 static Framebuffer* fb = NULL;
@@ -31,7 +33,6 @@ static pio_program_t const* current_rgb_program = nullptr;
 
 // current cannon location
 static uint16_t current_scanline = 0;
-static uint8_t  current_framebuffer = 0;
 static volatile bool new_vsync = false;
 
 // state machines
@@ -143,6 +144,88 @@ static void init_dma()
 }
 
 
+static void _set_mode(VgaMode mode)
+{
+    // wait for DMA to finish
+    dma_channel_wait_for_finish_blocking(rgb_chan_1);
+    dma_channel_wait_for_finish_blocking(rgb_chan_0);
+
+    // disable PIO programs
+    pio_sm_set_enabled(pio0, RGB_SM, false);
+    pio_sm_set_enabled(pio0, VSYNC_SM, false);
+    pio_sm_set_enabled(pio0, HSYNC_SM, false);
+
+    // set mode, and replace RGB program
+    pio_program_t const* new_program = nullptr;
+    switch (mode) {
+        case V_640x480:
+            fb_resize(fb, 640, 480);
+            new_program = &rgb640_program;
+            break;
+        case V_320x240:
+            fb_resize(fb, 320, 240);
+            new_program = &rgb320_program;
+            break;
+        case V_640x240:
+            fb_resize(fb, 640, 240);
+            new_program = &rgb640_program;
+            break;
+        /* TODO
+        case Mode::V_SPRITES:
+            fb->w = 320;
+            fb->h = 240;
+            new_program = &rgb320_program;
+            current_framebuffer = 1;
+            break;
+        */
+    }
+    current_mode = mode;
+    address_pointer = &fb->data[0];
+
+    // update mouse pos
+    mouse_x = MIN(mouse_x, fb->w - 1);
+    mouse_y = MIN(mouse_y, fb->h - 1);
+
+    // replace RGB PIO program
+    pio_remove_program(pio0, current_rgb_program, rgb_offset);
+    rgb_offset = pio_add_program(pio0, new_program);
+    current_rgb_program = new_program;
+
+    // reset data to feed the PIO programs
+    pio_sm_clear_fifos(pio0, RGB_SM);
+    pio_sm_put_blocking(pio0, RGB_SM, (fb->w / 2) - 1);
+    pio_sm_exec(pio0, RGB_SM, pio_encode_jmp(rgb_offset));
+
+    pio_sm_clear_fifos(pio0, HSYNC_SM);
+    pio_sm_put_blocking(pio0, HSYNC_SM, H_ACTIVE);
+    pio_sm_exec(pio0, HSYNC_SM, pio_encode_jmp(hsync_offset));
+
+    pio_sm_clear_fifos(pio0, VSYNC_SM);
+    pio_sm_put_blocking(pio0, VSYNC_SM, V_ACTIVE);
+    pio_sm_exec(pio0, VSYNC_SM, pio_encode_jmp(vsync_offset));
+
+    // update DMA counter
+    current_scanline = 0;
+    dma_channel_set_trans_count(rgb_chan_0, fb->w / 2, false);
+
+    // reinitialize programs in sync
+    pio_enable_sm_mask_in_sync(pio0, ((1u << HSYNC_SM) | (1u << VSYNC_SM) | (1u << RGB_SM)));
+}
+
+
+void vga_set_mode(VgaMode mode)
+{
+    for (uint8_t i = 0; i < 2; ++i) {   // I don't know why, it only works when executed twice
+        _set_mode(mode);
+        sleep_ms(50);
+    }
+
+    // adjust text matrix
+    if (terminal_active())
+        terminal_resize();
+}
+
+
 static void initialize_pio()
 {
     // load PIO programs
@@ -226,6 +309,8 @@ static void copy_sprites_vsync()
 
 void vga_init()
 {
+    current_mode = V_640x480;
+
     fb = fb_new(640, 480);
     address_pointer = &fb->data[0];
 

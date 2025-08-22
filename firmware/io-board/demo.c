@@ -65,7 +65,17 @@ int main()
                         printf("Key pressed -- HID 0x%02X, char 0x%02X (%c)\n", e.key.hid_key, e.key.chr, e.key.chr);
                         switch (e.key.hid_key) {
                             case HID_KEY_F1:
-                                printf("F1\n");
+                                vga_set_mode(V_640x480);
+                                draw();
+                                break;
+                            case HID_KEY_F2:
+                                vga_set_mode(V_640x240);
+                                draw();
+                                break;
+                            case HID_KEY_F3:
+                                vga_set_mode(V_320x240);
+                                draw();
+                                break;
                         }
                     }
                     break;

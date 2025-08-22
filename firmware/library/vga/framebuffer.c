@@ -12,10 +12,18 @@
 Framebuffer* fb_new(uint16_t w, uint16_t h)
 {
     Framebuffer* fb = calloc(1, sizeof(Framebuffer));
-    fb->w = w;
-    fb->h = h;
-    fb->data = calloc(1, w * h / 2);
+    fb_resize(fb, w, h);
     return fb;
+}
+
+void fb_resize(Framebuffer* fb, uint16_t w, uint16_t h)
+{
+    if (fb) {
+        free(fb->data);
+        fb->w = w;
+        fb->h = h;
+        fb->data = calloc(1, w * h / 2);
+    }
 }
 
 void fb_delete(Framebuffer* fb)
