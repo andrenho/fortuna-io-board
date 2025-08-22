@@ -20,25 +20,84 @@ void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)())
     vga_init();
 }
 
+static MouseButton mouse_buttons()
+{
+    Uint32 b = SDL_GetMouseState(NULL, NULL);
+    uint8_t buttons = 0;
+    if (b & SDL_BUTTON_LMASK)
+        buttons |= MB_LEFT;
+    if (b & SDL_BUTTON_MMASK)
+        buttons |= MB_MIDDLE;
+    if (b & SDL_BUTTON_RMASK)
+        buttons |= MB_RIGHT;
+    return buttons;
+}
+
 static void emulator_ui_events()
 {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
-        if (e.type == SDL_EVENT_QUIT)
-            exit(0);
-        if (e.type == SDL_EVENT_KEY_UP || e.type == SDL_EVENT_KEY_DOWN) {
-            Event ev = {
-                .type = E_KEYBOARD,
-                .key = (KeyboardEvent) {
-                    .hid_key = e.key.raw,
-                    .chr = e.key.key,
-                    .ctrl = e.key.mod & SDL_KMOD_CTRL,
-                    .alt = e.key.mod & SDL_KMOD_ALT,
-                    .shift = e.key.mod & SDL_KMOD_SHIFT,
-                    .pressed = e.key.down,
-                }
-            };
-            fortuna_add_event(&ev);
+        switch (e.type) {
+            case SDL_EVENT_QUIT:
+                exit(0);
+            case SDL_EVENT_KEY_UP:
+            case SDL_EVENT_KEY_DOWN: {
+                Event ev = {
+                    .type = E_KEYBOARD,
+                    .key = (KeyboardEvent) {
+                        .hid_key = e.key.raw,
+                        .chr = e.key.key,
+                        .ctrl = e.key.mod & SDL_KMOD_CTRL,
+                        .alt = e.key.mod & SDL_KMOD_ALT,
+                        .shift = e.key.mod & SDL_KMOD_SHIFT,
+                        .pressed = e.key.down,
+                    }
+                };
+                fortuna_add_event(&ev);
+                break;
+            }
+            case SDL_EVENT_MOUSE_MOTION: {
+                Event ev = {
+                    .type = E_MOUSE,
+                    .mouse = (MouseEvent) {
+                        .x = e.motion.xrel,
+                        .y = e.motion.yrel,
+                        .wheel = 0,
+                        .buttons = mouse_buttons(),
+                    }
+                };
+                fortuna_add_event(&ev);
+                break;
+            }
+            case SDL_EVENT_MOUSE_WHEEL: {
+                Event ev = {
+                    .type = E_MOUSE,
+                    .mouse = (MouseEvent) {
+                        .x = 0,
+                        .y = 0,
+                        .wheel = e.wheel.y,
+                        .buttons = mouse_buttons(),
+                    }
+                };
+                fortuna_add_event(&ev);
+                break;
+            }
+            case SDL_EVENT_MOUSE_BUTTON_UP:
+            case SDL_EVENT_MOUSE_BUTTON_DOWN: {
+                Event ev = {
+                    .type = E_MOUSE,
+                    .mouse = (MouseEvent) {
+                        .x = 0,
+                        .y = 0,
+                        .wheel = 0,
+                        .buttons = mouse_buttons(),
+                    }
+                };
+                fortuna_add_event(&ev);
+                break;
+            }
+            default:
+                break;
         }
     }
 }

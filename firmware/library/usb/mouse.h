@@ -3,7 +3,11 @@
 
 #include <stdint.h>
 
-#include "tusb.h"
+#ifdef FIRMWARE
+#  include "tusb.h"
+#else
+  typedef struct {} hid_mouse_report_t;
+#endif
 
 typedef enum {
     MB_LEFT   = 0b1,

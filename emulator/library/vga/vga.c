@@ -38,6 +38,8 @@ static SDL_Color palette[] = {
 void vga_init()
 {
     SDL_CreateWindowAndRenderer("fortuna-io-board emulator", 640 * 2, 480 * 2, 0, &window, &ren);
+    SDL_HideCursor();
+
     vga_set_mode(V_640x480);
 }
 
@@ -104,4 +106,12 @@ int vga_width()
 int vga_height()
 {
     return fb->h;
+}
+
+void vga_show_pointer(bool v)
+{
+    if (v)
+        SDL_ShowCursor();
+    else
+        SDL_HideCursor();
 }
