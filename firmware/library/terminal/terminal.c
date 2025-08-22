@@ -9,6 +9,8 @@
 #include "vga/vga.h"
 #include "vga/framebuffer.h"
 
+#include "spchars.h"
+
 #define MAX(a, b) ((a)>(b)?(a):(b))
 
 static TMT*         vt = NULL;
@@ -17,6 +19,7 @@ static uint16_t     rx = 0, ry = 0;
 static FFont const* font;
 static TMTPOINT     prev_cursor = { 0, 0 };
 static bool         blink_on = true;
+static bool         show_cursor_ = true;
 
 #define BLINK_TIMER_MS 500
 
@@ -66,7 +69,7 @@ static void draw_char(uint16_t row, uint16_t column, TMTCHAR c, TMTPOINT const* 
     FColor bg_color = translate_color(c.a.bg, false, true);
     FColor fg_color = translate_color(c.a.fg, c.a.bold, false);
 
-    if (cu->r == row && cu->c == column && blink_on) {
+    if (cu->r == row && cu->c == column && blink_on && show_cursor_) {
         fg_color = bg_color;
         bg_color = C_LIME;
     } else if (c.a.reverse) {
@@ -159,6 +162,11 @@ void terminal_start(FFont const* font_)
     add_blink_timer();
 }
 
+void terminal_putc(uint8_t c)
+{
+    tmt_write(vt, (const char *) &c, 1);
+}
+
 void terminal_write(const char* str)
 {
     tmt_write(vt, str, 0);
@@ -189,5 +197,36 @@ void terminal_set_cursor(uint8_t row, uint8_t column)
 
 void terminal_draw_box(uint8_t row, uint8_t column, uint8_t width, uint8_t height, bool dbl)
 {
+    terminal_set_cursor(row, column);
+    terminal_putc(dbl ? C_BOX_DOUBLE_DOWN_RIGHT : C_BOX_SINGLE_DOWN_RIGHT);
+    for (size_t i = 0; i < width - 2; ++i)
+        terminal_putc(dbl ? C_BOX_DOUBLE_HORIZ : C_BOX_SINGLE_HORIZ);
+    terminal_putc(dbl ? C_BOX_DOUBLE_DOWN_LEFT : C_BOX_SINGLE_DOWN_LEFT);
 
+    for (size_t i = 0; i < height - 2; ++i) {
+        terminal_set_cursor(row + i + 1, column);
+        terminal_putc(dbl ? C_BOX_DOUBLE_VERT : C_BOX_SINGLE_VERT);
+        terminal_set_cursor(row + i + 1, column + width - 1);
+        terminal_putc(dbl ? C_BOX_DOUBLE_VERT : C_BOX_SINGLE_VERT);
+    }
+
+    terminal_set_cursor(row + height - 1, column);
+    terminal_putc(dbl ? C_BOX_DOUBLE_UP_RIGHT : C_BOX_SINGLE_UP_RIGHT);
+    for (size_t i = 0; i < width - 2; ++i)
+        terminal_putc(dbl ? C_BOX_DOUBLE_HORIZ : C_BOX_SINGLE_HORIZ);
+    terminal_putc(dbl ? C_BOX_DOUBLE_UP_LEFT : C_BOX_SINGLE_UP_LEFT);
+}
+
+void terminal_clear_screen()
+{
+    terminal_write("\e[2J\eH");
+}
+
+void terminal_show_cursor(bool v)
+{
+    show_cursor_ = v;
+
+    const TMTSCREEN *s = tmt_screen(vt);
+    const TMTPOINT *cu = tmt_cursor(vt);
+    draw_char(cu->r, cu->c, s->lines[cu->r]->chars[cu->c], cu);
 }

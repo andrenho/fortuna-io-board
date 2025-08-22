@@ -12,6 +12,7 @@
 #include "usb/keyboard.h"
 #include "usb/mouse.h"
 #include "terminal/terminal.h"
+#include "terminal/spchars.h"
 
 #define DEFAULT_QUEUE_SIZE 64
 
