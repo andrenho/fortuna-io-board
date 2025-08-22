@@ -15,6 +15,7 @@
   - [ ] Curses-like
   - [ ] Other fonts
 - [x] Write program
+  - [ ] Translate HID
 - [ ] Change resolution
 - [ ] Memory available
 - [ ] SD card

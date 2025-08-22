@@ -1,11 +1,14 @@
 #include <stddef.h>
+#include <stdio.h>
 
 #include "fortuna.h"
 
-static void command(uint8_t row, uint8_t column, const char* key, const char* command)
+static void command(uint8_t row, uint8_t column, const char* key, const char* command, bool selected)
 {
     terminal_set_cursor(row, column);
     terminal_writef("[\e[30;42m %s \e[0m] %s", key, command);
+    if (selected)
+        terminal_write(" (selected)");
 }
 
 static void draw()
@@ -23,8 +26,9 @@ static void draw()
     terminal_write("Fortuna I/O Board DEMO");
 
     // resolutions
-    command(8, 3, "F1", "Resolution: 640x480");
-    command(9, 3, "F2", "Resolution: 640x240");
+    command( 8, 3, "F1", "Resolution: 640x480", vga_framebuffer()->w == 640 && vga_framebuffer()->h == 480);
+    command( 9, 3, "F2", "Resolution: 640x240", vga_framebuffer()->w == 640 && vga_framebuffer()->h == 240);
+    command(10, 3, "F3", "Resolution: 320x240", vga_framebuffer()->w == 320 && vga_framebuffer()->h == 240);
 
     // draw colors
     uint16_t sq_width = vga_width() / 17;
@@ -57,6 +61,8 @@ int main()
             // terminal_do_event(&e);
             switch (e.type) {
                 case E_KEYBOARD:
+                    if (e.key.pressed)
+                        printf("Key pressed -- HID 0x%02X, char 0x%02X (%c)\n", e.key.hid_key, e.key.chr, e.key.chr);
                     break;
                 case E_USER_PANEL:
                     break;
