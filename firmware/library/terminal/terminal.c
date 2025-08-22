@@ -1,5 +1,7 @@
 #include "terminal.h"
 
+#include <stdio.h>
+
 #include "contrib/libtmt/tmt.h"
 
 #include "vga/vga.h"
@@ -51,7 +53,8 @@ void terminal_start(FFont const* font_)
     columns = vga_width() / font->char_width;
     lines = vga_height() / font->char_height;
 
-    vt = tmt_open(columns, lines, callback, NULL, NULL);
+    vt = tmt_open(lines, columns, callback, NULL, NULL);
+    printf("%d\n", tmt_screen(vt)->nline);
 }
 
 void terminal_write(const char* str)

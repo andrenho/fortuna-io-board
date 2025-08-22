@@ -15,19 +15,19 @@ int main()
     // mouse
     vga_show_pointer(true);
 
+    terminal_start(fb_default_font());
+    terminal_write("Hello.");
+
     // draw colors
     uint16_t sq_width = vga_width() / 17;
     uint16_t sq_height = vga_height() / 16;
     for (uint8_t i = 0; i < 16; ++i)
         fb_draw_rectangle_filled(vga_framebuffer(), sq_width * i + 10, 20, sq_width - 10, sq_height, i);
 
-    terminal_start(fb_default_font());
-    terminal_write("Hello.");
-
     for (;;) {
         Event e;
         while (fortuna_next_event(&e)) {
-            terminal_do_event(&e);
+            // terminal_do_event(&e);
             switch (e.type) {
                 case E_KEYBOARD:
                     break;
