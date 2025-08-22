@@ -14,7 +14,7 @@
   - [x] Colors
   - [ ] Curses-like
   - [ ] Other fonts
-- [ ] Write program
+- [x] Write program
 - [ ] Change resolution
 - [ ] Memory available
 - [ ] SD card

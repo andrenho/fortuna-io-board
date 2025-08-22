@@ -230,3 +230,13 @@ void terminal_show_cursor(bool v)
     const TMTPOINT *cu = tmt_cursor(vt);
     draw_char(cu->r, cu->c, s->lines[cu->r]->chars[cu->c], cu);
 }
+
+uint8_t terminal_columns()
+{
+    return tmt_screen(vt)->ncol;
+}
+
+uint8_t terminal_rows()
+{
+    return tmt_screen(vt)->nline;
+}

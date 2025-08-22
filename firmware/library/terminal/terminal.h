@@ -17,4 +17,7 @@ void terminal_draw_box(uint8_t row, uint8_t column, uint8_t width, uint8_t heigh
 void terminal_clear_screen();
 void terminal_show_cursor(bool v);
 
+uint8_t terminal_columns();
+uint8_t terminal_rows();
+
 #endif
