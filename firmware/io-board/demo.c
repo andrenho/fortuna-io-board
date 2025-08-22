@@ -61,8 +61,13 @@ int main()
             // terminal_do_event(&e);
             switch (e.type) {
                 case E_KEYBOARD:
-                    if (e.key.pressed)
+                    if (e.key.pressed) {
                         printf("Key pressed -- HID 0x%02X, char 0x%02X (%c)\n", e.key.hid_key, e.key.chr, e.key.chr);
+                        switch (e.key.hid_key) {
+                            case HID_KEY_F1:
+                                printf("F1\n");
+                        }
+                    }
                     break;
                 case E_USER_PANEL:
                     break;

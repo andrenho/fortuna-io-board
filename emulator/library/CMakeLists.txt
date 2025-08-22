@@ -8,6 +8,7 @@ add_library(${PROJECT_NAME} STATIC
         fortuna.h            fortuna.c
         vga/framebuffer.h    vga/framebuffer.c
         vga/vga.h            vga/vga.c
+        usb/sdlhid.h         usb/sdlhid.c
         terminal/terminal.h  terminal/terminal.c
         contrib/libtmt/tmt.h contrib/libtmt/tmt.c
 )

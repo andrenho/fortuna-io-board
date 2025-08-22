@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "SDL3/SDL.h"
+#include "usb/sdlhid.h"
 
 static Event* event_queue = NULL;
 static size_t event_queue_sz = 0;
@@ -45,7 +46,7 @@ static void emulator_ui_events()
                 Event ev = {
                     .type = E_KEYBOARD,
                     .key = (KeyboardEvent) {
-                        .hid_key = e.key.raw,
+                        .hid_key = SDLKeycodeToHID(e.key.key),
                         .chr = e.key.key,
                         .ctrl = e.key.mod & SDL_KMOD_CTRL,
                         .alt = e.key.mod & SDL_KMOD_ALT,

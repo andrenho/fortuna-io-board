@@ -11,6 +11,7 @@
 #include "usb/usb.h"
 #include "usb/keyboard.h"
 #include "usb/mouse.h"
+#include "usb/hid.h"
 #include "terminal/terminal.h"
 #include "terminal/spchars.h"
 
