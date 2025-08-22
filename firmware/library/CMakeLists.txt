@@ -35,6 +35,7 @@ target_sources(${PROJECT_NAME} INTERFACE
 		usb/mouse.h         usb/mouse.c
 		usb/keyboard.h      usb/keyboard.c
 		usb/tusb_config.h
+		contrib/libtmt/tmt.h contrib/libtmt/tmt.c
 )
 
 #add_subdirectory(contrib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)

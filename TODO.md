@@ -7,7 +7,14 @@
 - [x] Framebuffer primitives and text
   - [x] Text tools
 - [x] Keyboard / mouse / joystick
-  - [ ] Mouse pointer
+  - [x] Mouse pointer
+- [ ] Terminal
+  - [ ] Location in screen
+  - [ ] Cursor
+  - [ ] Colors
+  - [ ] Alternate character set
+  - [ ] Curses-like
+- [ ] Write program
 - [ ] Change resolution
 - [ ] Memory available
 - [ ] SD card
@@ -18,7 +25,6 @@
 ## Version 2.1
 
 - [ ] Sprites
-- [ ] Terminal
 - [ ] Dumb terminal mode with front panel settings
 - [ ] Update README.md, documentation
 

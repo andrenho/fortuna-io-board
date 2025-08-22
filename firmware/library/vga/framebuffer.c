@@ -355,9 +355,6 @@ static void draw_from_byte(Framebuffer* fb, uint8_t byte, uint8_t n_bytes, uint1
 
 void fb_draw_character_bg(Framebuffer* fb, uint16_t px, uint16_t py, FFont const* font, uint8_t ch, FColor bg_color, FColor fg_color)
 {
-    if (font == DEFAULT_FONT)
-        font = &fortuna_font;
-
     uint8_t* pixel = &font->pixels[(ch - font->first_char) * font->char_height];
     for (uint8_t y = 0; y < font->char_height; ++y)
         draw_from_byte_bg(fb, *(pixel + y), font->char_width, px, py + y, bg_color, fg_color);
@@ -365,10 +362,12 @@ void fb_draw_character_bg(Framebuffer* fb, uint16_t px, uint16_t py, FFont const
 
 void fb_draw_character(Framebuffer* fb, uint16_t px, uint16_t py, FFont const* font, uint8_t ch, FColor fg_color)
 {
-    if (font == DEFAULT_FONT)
-        font = &fortuna_font;
-
     uint8_t* pixel = &font->pixels[(ch - font->first_char) * font->char_height];
     for (uint8_t y = 0; y < font->char_height; ++y)
         draw_from_byte(fb, *(pixel + y), font->char_width, px, py + y, fg_color);
+}
+
+FFont const* fb_default_font()
+{
+    return &fortuna_font;
 }
