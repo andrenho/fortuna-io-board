@@ -1,6 +1,8 @@
 #include "terminal.h"
 
 #include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
 
 #include "contrib/libtmt/tmt.h"
 
@@ -20,9 +22,17 @@ static bool         blink_on = true;
 
 #ifdef FIRMWARE
 #   include <pico/time.h>
+#   define IN_FLASH __in_flash()
 #else
 #   include <SDL3/SDL.h>
+#   define IN_FLASH
 #endif
+
+/*
+static const char* IN_FLASH alt_charset = {
+    0x1a, 0x1b, 0x18, 0x19, 0xfe, 0x04, 0xb1, 0xf8,
+};
+*/
 
 static FColor translate_color(tmt_color_t color, bool bold, bool is_bg)
 {
@@ -52,10 +62,6 @@ static void draw_char(uint16_t row, uint16_t column, TMTCHAR c, TMTPOINT const* 
 {
     uint16_t x = column * font->char_width + rx;
     uint16_t y = row * font->char_height + ry;
-
-    if (c.c == 'H') {
-        ;
-    }
 
     FColor bg_color = translate_color(c.a.bg, false, true);
     FColor fg_color = translate_color(c.a.fg, c.a.bold, false);
@@ -158,8 +164,30 @@ void terminal_write(const char* str)
     tmt_write(vt, str, 0);
 }
 
+void terminal_writef(const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    int sz = vsnprintf(NULL, 0, fmt, args);
+    char* buf = malloc(sz + 1);
+    vsnprintf(buf, sz + 1, fmt, args);
+    terminal_write(buf);
+    free(buf);
+    va_end(args);
+}
+
 void terminal_end()
 {
     tmt_close(vt);
     vt = NULL;
+}
+
+void terminal_set_cursor(uint8_t row, uint8_t column)
+{
+    terminal_writef("\e[%d;%dH", row, column);
+}
+
+void terminal_draw_box(uint8_t row, uint8_t column, uint8_t width, uint8_t height, bool dbl)
+{
+
 }

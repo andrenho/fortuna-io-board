@@ -11,8 +11,7 @@
 - [x] Terminal
   - [x] Location in screen
   - [x] Cursor
-  - [ ] Colors
-  - [ ] Alternate character set
+  - [x] Colors
   - [ ] Curses-like
   - [ ] Other fonts
 - [ ] Write program
@@ -25,6 +24,7 @@
 
 ## Version 2.1
 
+- [ ] Alternate character set
 - [ ] Sprites
 - [ ] Dumb terminal mode with front panel settings
 - [ ] Update README.md, documentation
