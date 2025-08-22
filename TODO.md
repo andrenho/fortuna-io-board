@@ -8,8 +8,8 @@
   - [x] Text tools
 - [x] Keyboard / mouse / joystick
   - [x] Mouse pointer
-- [ ] Terminal
-  - [ ] Location in screen
+- [x] Terminal
+  - [x] Location in screen
   - [ ] Cursor
   - [ ] Colors
   - [ ] Alternate character set

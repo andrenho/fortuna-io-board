@@ -8,7 +8,6 @@ struct Event;
 void terminal_start(FFont const* font);
 void terminal_end();
 
-void terminal_do_event(struct Event* event);
 void terminal_write(const char* str);
 
 #endif

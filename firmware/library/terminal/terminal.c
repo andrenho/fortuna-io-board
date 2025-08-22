@@ -7,17 +7,35 @@
 #include "vga/vga.h"
 #include "vga/framebuffer.h"
 
+#define MAX(a, b) ((a)>(b)?(a):(b))
+
 static TMT*         vt = NULL;
 static uint16_t     columns, lines;
 static uint16_t     rx = 0, ry = 0;
 static FFont const* font;
+static TMTPOINT     prev_cursor = { 0, 0 };
+static bool         blink_on = true;
 
-static void draw_char(uint16_t row, uint16_t column, TMTCHAR c)
+#define BLINK_TIMER_MS 500
+
+#ifdef FIRMWARE
+#   include <pico.h>
+#else
+#   include <SDL3/SDL.h>
+#endif
+
+static void draw_char(uint16_t row, uint16_t column, TMTCHAR c, TMTPOINT const* cu)
 {
     uint16_t x = column * font->char_width + rx;
     uint16_t y = row * font->char_height + ry;
+
     FColor bg_color = C_BLACK;  // TODO
     FColor fg_color = C_WHITE;  // TODO
+
+    if (cu->r == row && cu->c == column && blink_on) {
+        bg_color = C_LIME;
+        fg_color = C_BLACK;
+    }
 
     fb_draw_character_bg(vga_framebuffer(), x, y, font, c.c, bg_color, fg_color);
 }
@@ -32,12 +50,15 @@ static void callback(tmt_msg_t m, TMT *vt, const void *a, void *p)
             for (size_t r = 0; r < s->nline; r++)
                 if (s->lines[r]->dirty)
                     for (size_t c = 0; c < s->ncol; c++)
-                        draw_char(r, c, s->lines[r]->chars[c]);
+                        draw_char(r, c, s->lines[r]->chars[c], cu);
             tmt_clean(vt);
             break;
         case TMT_MSG_BELL:
             break;
         case TMT_MSG_MOVED:
+            draw_char(prev_cursor.r, prev_cursor.c, s->lines[prev_cursor.r]->chars[prev_cursor.c], cu);
+            prev_cursor = *cu;
+            draw_char(cu->r, cu->c, s->lines[cu->r]->chars[cu->c], cu);
             break;
         case TMT_MSG_ANSWER:
             break;
@@ -46,15 +67,55 @@ static void callback(tmt_msg_t m, TMT *vt, const void *a, void *p)
     }
 }
 
+static bool redraw_char_on_cursor(TMT* vt)
+{
+    blink_on = !blink_on;
+    const TMTPOINT *cu = tmt_cursor(vt);
+    const TMTSCREEN *s = tmt_screen(vt);
+    draw_char(cu->r, cu->c, s->lines[cu->r]->chars[cu->c], cu);
+    return vt != NULL;
+}
+
+#ifdef FIRMWARE
+
+static bool timer_callback(repeating_timer_t* rt)
+{
+    return redraw_char_on_cursor(* (TMT**) rt->user_data);
+}
+
+static void add_blink_timer()
+{
+    static repeating_timer_t timer;
+    add_repeating_timer_ms(BLINK_TIMER_MS, timer_callback, &vt, &timer);
+}
+
+#else
+
+static Uint32 timer_callback(void *userdata, SDL_TimerID timerID, Uint32 interval)
+{
+    return redraw_char_on_cursor(* (TMT**) userdata) ? BLINK_TIMER_MS : 0;
+}
+
+static void add_blink_timer()
+{
+    SDL_AddTimer(BLINK_TIMER_MS, timer_callback, &vt);
+}
+
+#endif
+
 void terminal_start(FFont const* font_)
 {
     font = font_;
 
-    columns = vga_width() / font->char_width;
-    lines = vga_height() / font->char_height;
+    columns = MAX(80, (vga_width() / font->char_width));
+    lines = MAX(25, (vga_height() / font->char_height));
+
+    rx = (vga_width() / 2) - (columns * font->char_width / 2);
+    ry = (vga_height() / 2) - (lines * font->char_height / 2);
 
     vt = tmt_open(lines, columns, callback, NULL, NULL);
-    printf("%d\n", tmt_screen(vt)->nline);
+
+    add_blink_timer();
 }
 
 void terminal_write(const char* str)
@@ -65,8 +126,5 @@ void terminal_write(const char* str)
 void terminal_end()
 {
     tmt_close(vt);
-}
-
-void terminal_do_event(struct Event* event)
-{
+    vt = NULL;
 }
