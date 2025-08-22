@@ -10,10 +10,11 @@
   - [x] Mouse pointer
 - [x] Terminal
   - [x] Location in screen
-  - [ ] Cursor
+  - [x] Cursor
   - [ ] Colors
   - [ ] Alternate character set
   - [ ] Curses-like
+  - [ ] Other fonts
 - [ ] Write program
 - [ ] Change resolution
 - [ ] Memory available

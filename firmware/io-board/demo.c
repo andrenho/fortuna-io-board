@@ -16,7 +16,7 @@ int main()
     vga_show_pointer(true);
 
     terminal_start(fb_default_font());
-    terminal_write("Hello.");
+    terminal_write("Hello \e[0;36mworld\e[0m.");
 
     // draw colors
     uint16_t sq_width = vga_width() / 17;

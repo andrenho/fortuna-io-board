@@ -19,23 +19,58 @@ static bool         blink_on = true;
 #define BLINK_TIMER_MS 500
 
 #ifdef FIRMWARE
-#   include <pico.h>
+#   include <pico/time.h>
 #else
 #   include <SDL3/SDL.h>
 #endif
+
+static FColor translate_color(tmt_color_t color, bool bold, bool is_bg)
+{
+    switch (color) {
+        case TMT_COLOR_BLACK:
+            return bold ? C_DARK_GREEN : C_BLACK;
+        case TMT_COLOR_RED:
+            return bold ? C_DARK_ORANGE : C_RED;
+        case TMT_COLOR_GREEN:
+            return bold ? C_LIME : C_GREEN;
+        case TMT_COLOR_YELLOW:
+            return bold ? C_YELLOW : C_ORANGE;
+        case TMT_COLOR_BLUE:
+            return bold ? C_SKY_BLUE : C_BLUE;
+        case TMT_COLOR_MAGENTA:
+            return bold ? C_VIOLET : C_MAGENTA;
+        case TMT_COLOR_CYAN:
+            return bold ? C_CYAN : C_SKY_BLUE;
+        case TMT_COLOR_WHITE:
+            return C_WHITE;
+        default:
+            return is_bg ? C_BLACK : C_WHITE;
+    }
+}
 
 static void draw_char(uint16_t row, uint16_t column, TMTCHAR c, TMTPOINT const* cu)
 {
     uint16_t x = column * font->char_width + rx;
     uint16_t y = row * font->char_height + ry;
 
-    FColor bg_color = C_BLACK;  // TODO
-    FColor fg_color = C_WHITE;  // TODO
+    if (c.c == 'H') {
+        ;
+    }
+
+    FColor bg_color = translate_color(c.a.bg, false, true);
+    FColor fg_color = translate_color(c.a.fg, c.a.bold, false);
 
     if (cu->r == row && cu->c == column && blink_on) {
+        fg_color = bg_color;
         bg_color = C_LIME;
-        fg_color = C_BLACK;
+    } else if (c.a.reverse) {
+        FColor tmp = fg_color;
+        fg_color = bg_color;
+        bg_color = tmp;
     }
+
+    if (c.a.invisible)
+        fg_color = bg_color;
 
     fb_draw_character_bg(vga_framebuffer(), x, y, font, c.c, bg_color, fg_color);
 }
