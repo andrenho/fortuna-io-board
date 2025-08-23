@@ -37,6 +37,8 @@
 
 ## Version 2.2
 
+- [ ] Emulator
+  - [ ] SDCard in directory (not image)
 - [ ] Design communication language
 - [ ] External connections
   - [ ] SPI
