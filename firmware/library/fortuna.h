@@ -14,6 +14,9 @@
 #include "usb/hid.h"
 #include "terminal/terminal.h"
 #include "terminal/spchars.h"
+#include "hw_config.h"
+#include "f_util.h"
+#include "ff.h"
 
 #define DEFAULT_QUEUE_SIZE 64
 

@@ -31,6 +31,7 @@ target_sources(${PROJECT_NAME} INTERFACE
 		vga/font.h			vga/fortuna_font.h
 		vga/vga.h 			vga/vga.c
 		vga/framebuffer.h  	vga/framebuffer.c
+		sdcard/ffconf.h     sdcard/hw_config.c
 		usb/usb.h			usb/usb.c
 		usb/mouse.h         usb/mouse.c
 		usb/keyboard.h      usb/keyboard.c
@@ -63,5 +64,5 @@ target_link_libraries(${PROJECT_NAME} INTERFACE
 	pico_multicore
     tinyusb_host
     tinyusb_board
-    #no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
+    no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
 )
