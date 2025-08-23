@@ -1,6 +1,7 @@
 #include "fortuna.h"
 
 #include <stdio.h>
+#include <malloc.h>
 
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
@@ -71,3 +72,16 @@ bool fortuna_next_event(Event* event)
 {
     return queue_try_remove(&event_queue, event);
 }
+
+uint32_t fortuna_total_ram()
+{
+    extern char __StackLimit, __bss_end__;
+    return &__StackLimit  - &__bss_end__;
+}
+
+uint32_t fortuna_free_ram()
+{
+    struct mallinfo m = mallinfo();
+    return fortuna_total_ram() - m.uordblks;
+}
+

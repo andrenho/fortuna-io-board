@@ -6,6 +6,8 @@
 #include "SDL3/SDL.h"
 #include "usb/sdlhid.h"
 
+#include <malloc/malloc.h>
+
 static Event* event_queue = NULL;
 static size_t event_queue_sz = 0;
 static size_t event_queue_max_sz;
@@ -128,4 +130,14 @@ bool fortuna_add_event(Event const* event)
     memcpy(&event_queue[event_queue_sz], event, sizeof(Event));
     ++event_queue_sz;
     return true;
+}
+
+uint32_t fortuna_total_ram()
+{
+    return 640 * 1024;
+}
+
+uint32_t fortuna_free_ram()
+{
+    return 240 * 1024;
 }

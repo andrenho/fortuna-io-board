@@ -16,7 +16,7 @@
 - [x] Write program
   - [x] Translate HID
 - [x] Change resolution
-- [ ] Memory available
+- [x] Memory available
 - [ ] SD card
 - [ ] Front panel
 - [ ] Real-time clock (get/set)
@@ -27,6 +27,7 @@
 - [ ] VGA
   - [ ] Draw images
   - [ ] Sprites
+  - [ ] Bug: font seems to be using RAM
 - [ ] Terminal
   - [ ] Curses-like
   - [ ] Alternate character set

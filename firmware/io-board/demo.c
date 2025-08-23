@@ -60,6 +60,9 @@ static void draw()
             x += w + 4;
         }
     }
+
+    // memory
+    terminal_writef_at(terminal_rows() - 2, 3, "%d kB free out of %d kB", fortuna_free_ram() / 1024, fortuna_total_ram() / 1024);
 }
 
 int main()
