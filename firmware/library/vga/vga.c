@@ -43,7 +43,7 @@ static const uint RGB_SM = 2;
 // mouse location
 static constexpr uint8_t CURSOR_HEIGHT = 8;
 static int8_t move_mouse_x = 0, move_mouse_y = 0;
-static uint16_t mouse_x = 0, mouse_y = 0;
+static uint16_t mouse_x = 320, mouse_y = 240;
 static uint8_t vga_data_array_mouse[640 * CURSOR_HEIGHT / 2];
 static bool show_mouse_pointer = false;
 
@@ -183,8 +183,8 @@ static void _set_mode(VgaMode mode)
     address_pointer = &fb->data[0];
 
     // update mouse pos
-    mouse_x = MIN(mouse_x, fb->w - 1);
-    mouse_y = MIN(mouse_y, fb->h - 1);
+    mouse_x = fb->w / 2;
+    mouse_y = fb->h / 2;
 
     // replace RGB PIO program
     pio_remove_program(pio0, current_rgb_program, rgb_offset);
