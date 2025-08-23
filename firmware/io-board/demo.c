@@ -6,6 +6,8 @@
 #include "ibm_font.h"
 #include "vga_font.h"
 
+static int sdcard_line;
+
 static void command(uint8_t row, uint8_t column, const char* key, const char* command, bool selected)
 {
     terminal_set_cursor(row, column);
@@ -33,15 +35,21 @@ static void draw()
     if (vga_height() == 480)
         ++y;
     uint16_t top_y = y;
-    terminal_write_at(y++, 3, "Resolution:");
+    terminal_write_at(y++, 3, "\e[4;37mResolution:\e[0m");
     command(y++, 4, "F1", "640x480", vga_framebuffer()->w == 640 && vga_framebuffer()->h == 480);
     command(y++, 4, "F2", "640x240", vga_framebuffer()->w == 640 && vga_framebuffer()->h == 240);
     command(y++, 4, "F3", "320x240", vga_framebuffer()->w == 320 && vga_framebuffer()->h == 240);
+    ++y;
+
+    // other
+    terminal_write_at(y++, 3, "\e[4;37mOther:\e[0m");
+    sdcard_line = y;
+    command(y++, 4, "S", "SDCard", false);
 
     // fonts
     y = top_y;
     uint16_t x = vga_width() == 640 ? 36 : 24;
-    terminal_write_at(y++, x, "Fonts:");
+    terminal_write_at(y++, x, "\e[4;37mFonts:\e[0m");
     command(y++, x + 1, "F5", "Fortuna", terminal_font() == fb_default_font());
     command(y++, x + 1, "F6", "IBM", terminal_font() == &ibm_font);
     command(y++, x + 1, "F7", "Toshiba", terminal_font() == &toshiba_font);
@@ -63,6 +71,11 @@ static void draw()
 
     // memory
     terminal_writef_at(terminal_rows() - 2, 3, "%d kB free out of %d kB", fortuna_free_ram() / 1024, fortuna_total_ram() / 1024);
+}
+
+static void test_sdcard()
+{
+    terminal_write_at(sdcard_line, 16, ": \e[0;31mERROR\e[0m");
 }
 
 int main(int argc, char* argv[])
@@ -93,16 +106,13 @@ int main(int argc, char* argv[])
                         printf("Key pressed -- HID 0x%02X, char 0x%02X (%c)\n", e.key.hid_key, e.key.chr, e.key.chr);
                         switch (e.key.hid_key) {
                             case HID_KEY_F1:
-                                vga_set_mode(V_640x480);
-                                draw();
+                                vga_set_mode(V_640x480); draw();
                                 break;
                             case HID_KEY_F2:
-                                vga_set_mode(V_640x240);
-                                draw();
+                                vga_set_mode(V_640x240); draw();
                                 break;
                             case HID_KEY_F3:
-                                vga_set_mode(V_320x240);
-                                draw();
+                                vga_set_mode(V_320x240); draw();
                                 break;
                             case HID_KEY_F5:
                                 fb_clear(vga_framebuffer());
@@ -110,16 +120,18 @@ int main(int argc, char* argv[])
                                 draw();
                                 break;
                             case HID_KEY_F6:
-                                terminal_set_font(&ibm_font);
-                                draw();
+                                terminal_set_font(&ibm_font); draw();
                                 break;
                             case HID_KEY_F7:
-                                terminal_set_font(&toshiba_font);
-                                draw();
+                                terminal_set_font(&toshiba_font); draw();
                                 break;
                             case HID_KEY_F8:
-                                terminal_set_font(&vga_font);
-                                draw();
+                                terminal_set_font(&vga_font); draw();
+                                break;
+                        }
+                        switch (e.key.chr) {
+                            case 's': case 'S':
+                                test_sdcard();
                                 break;
                         }
                     }

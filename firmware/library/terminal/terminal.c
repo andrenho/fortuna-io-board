@@ -82,6 +82,9 @@ static void draw_char(uint16_t row, uint16_t column, TMTCHAR c, TMTPOINT const* 
         fg_color = bg_color;
 
     fb_draw_character_bg(vga_framebuffer(), x, y, font, c.c, bg_color, fg_color);
+
+    if (c.a.underline)
+        fb_draw_line(vga_framebuffer(), x, y + font->char_height - 2, x + font->char_width, y + font->char_height - 2, fg_color);
 }
 
 static void callback(tmt_msg_t m, TMT *vt, const void *a, void *p)
