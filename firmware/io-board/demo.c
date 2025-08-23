@@ -27,7 +27,7 @@ static void draw()
     ++y;
 
     // info
-    terminal_write_at(y++, 3, "\e[1;33mFortuna I/O Board DEMO\e[0m");
+    terminal_writef_at(y++, 3, "\e[1;33mFortuna I/O Board DEMO\e[0m (term %dx%d)", terminal_columns(), terminal_rows());
 
     // resolutions
     if (vga_height() == 480)
