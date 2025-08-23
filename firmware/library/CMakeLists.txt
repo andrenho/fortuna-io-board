@@ -39,7 +39,7 @@ target_sources(${PROJECT_NAME} INTERFACE
 		contrib/libtmt/tmt.h contrib/libtmt/tmt.c
 )
 
-#add_subdirectory(contrib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
+add_subdirectory(contrib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src)
 
 pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/hsync.pio)
 pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/vga/pio/vsync.pio)

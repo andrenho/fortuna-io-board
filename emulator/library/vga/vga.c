@@ -9,6 +9,7 @@
 
 #include "terminal/terminal.h"
 #include "framebuffer.h"
+#include "config/config.h"
 
 static Framebuffer* fb = NULL;
 
@@ -38,7 +39,7 @@ static SDL_Color palette[] = {
 
 void vga_init()
 {
-    SDL_CreateWindowAndRenderer("fortuna-io-board emulator", 640 * 2, 480 * 2, 0, &window, &ren);
+    SDL_CreateWindowAndRenderer("fortuna-io-board emulator", 640 * config.zoom, 480 * config.zoom, 0, &window, &ren);
     SDL_HideCursor();
 
     fb = fb_new(640, 480);
@@ -72,7 +73,7 @@ void vga_set_mode(VgaMode mode)
     convert_framebuffer_to_32();
 
     texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, w, h);
-    if (h == 240)
+    if (config.nearest)
         SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 
     // adjust text matrix

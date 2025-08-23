@@ -17,11 +17,12 @@
   - [x] Translate HID
 - [x] Change resolution
 - [x] Memory available
-- [ ] Bug: font seems to be using RAM
+- [x] Bug: font seems to be using RAM
 - [ ] SD card
 - [ ] Front panel
 - [ ] Real-time clock (get/set)
 - [ ] Audio
+- [ ] Documentation
 
 ## Version 2.1
 

@@ -15,7 +15,7 @@ static void (*core1_step_function)();
 
 static void core1_entry();
 
-void fortuna_init(uint16_t event_queue_size_, void(* core1_step_function_)())
+void fortuna_init(uint16_t event_queue_size_, void(* core1_step_function_)(), int argc, char* argv[])
 {
     event_queue_size = event_queue_size_;
     core1_step_function = core1_step_function_;

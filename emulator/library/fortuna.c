@@ -2,18 +2,21 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <malloc/malloc.h>
 
 #include "SDL3/SDL.h"
-#include "usb/sdlhid.h"
 
-#include <malloc/malloc.h>
+#include "usb/sdlhid.h"
+#include "config/config.h"
 
 static Event* event_queue = NULL;
 static size_t event_queue_sz = 0;
 static size_t event_queue_max_sz;
 
-void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)())
+void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int argc, char* argv[])
 {
+    config_load(argc, argv);
+
     event_queue = calloc(sizeof(Event), event_queue_size);
     event_queue_sz = 0;
     event_queue_max_sz = event_queue_size;

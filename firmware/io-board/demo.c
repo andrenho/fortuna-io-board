@@ -65,9 +65,9 @@ static void draw()
     terminal_writef_at(terminal_rows() - 2, 3, "%d kB free out of %d kB", fortuna_free_ram() / 1024, fortuna_total_ram() / 1024);
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-    fortuna_init(DEFAULT_QUEUE_SIZE, NULL);
+    fortuna_init(DEFAULT_QUEUE_SIZE, NULL, argc, argv);
 
     // fixating points (used to calibrate the monitor)
     fb_set_pixel(vga_framebuffer(), 0, 0, C_NAVY_BLUE);

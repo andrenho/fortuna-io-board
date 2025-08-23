@@ -9,6 +9,7 @@ add_library(${PROJECT_NAME} STATIC
         vga/framebuffer.h    vga/framebuffer.c
         vga/vga.h            vga/vga.c
         usb/sdlhid.h         usb/sdlhid.c
+        config/config.c      config/config.h
         terminal/terminal.h  terminal/terminal.c
         contrib/libtmt/tmt.h contrib/libtmt/tmt.c
 )
