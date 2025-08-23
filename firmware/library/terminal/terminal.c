@@ -100,7 +100,8 @@ static void callback(tmt_msg_t m, TMT *vt, const void *a, void *p)
         case TMT_MSG_BELL:
             break;
         case TMT_MSG_MOVED:
-            draw_char(prev_cursor.r, prev_cursor.c, s->lines[prev_cursor.r]->chars[prev_cursor.c], cu);
+            if (prev_cursor.r < lines && prev_cursor.c < columns)
+                draw_char(prev_cursor.r, prev_cursor.c, s->lines[prev_cursor.r]->chars[prev_cursor.c], cu);
             prev_cursor = *cu;
             draw_char(cu->r, cu->c, s->lines[cu->r]->chars[cu->c], cu);
             break;
