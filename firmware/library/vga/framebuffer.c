@@ -19,10 +19,10 @@ Framebuffer* fb_new(uint16_t w, uint16_t h)
 void fb_resize(Framebuffer* fb, uint16_t w, uint16_t h)
 {
     if (fb) {
-        free(fb->data);
         fb->w = w;
         fb->h = h;
-        fb->data = calloc(1, w * h / 2);
+        fb->data = realloc(fb->data, w * h / 2);
+        memset(fb->data, 0, w * h / 2);
     }
 }
 

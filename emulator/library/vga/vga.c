@@ -5,9 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "framebuffer.h"
-
 #include "SDL3/SDL.h"
+
+#include "terminal/terminal.h"
+#include "framebuffer.h"
 
 static Framebuffer* fb = NULL;
 
@@ -40,6 +41,7 @@ void vga_init()
     SDL_CreateWindowAndRenderer("fortuna-io-board emulator", 640 * 2, 480 * 2, 0, &window, &ren);
     SDL_HideCursor();
 
+    fb = fb_new(640, 480);
     vga_set_mode(V_640x480);
 }
 
@@ -62,15 +64,20 @@ void vga_set_mode(VgaMode mode)
 
     if (texture)
         SDL_DestroyTexture(texture);
-    fb_delete(fb);
     free(fb32);
 
-    fb = fb_new(w, h);  // actual framebuffer
+    fb_resize(fb, w, h);
+
     fb32 = calloc(sizeof(SDL_Color), w * h);
     convert_framebuffer_to_32();
 
     texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, w, h);
     // SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+
+    // adjust text matrix
+    if (terminal_active()) {
+        terminal_resize();
+    }
 }
 
 void vga_step()

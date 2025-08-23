@@ -11,7 +11,7 @@
 
 #include "spchars.h"
 
-#define MAX(a, b) ((a)>(b)?(a):(b))
+#define MIN(a, b) ((a)<(b)?(a):(b))
 
 static TMT*         vt = NULL;
 static uint16_t     columns, lines;
@@ -151,8 +151,8 @@ void terminal_start(FFont const* font_)
 {
     font = font_;
 
-    columns = MAX(80, (vga_width() / font->char_width));
-    lines = MAX(25, (vga_height() / font->char_height));
+    columns = MIN(80, (vga_width() / font->char_width));
+    lines = MIN(25, (vga_height() / font->char_height));
 
     rx = (vga_width() / 2) - (columns * font->char_width / 2);
     ry = (vga_height() / 2) - (lines * font->char_height / 2);
@@ -164,13 +164,14 @@ void terminal_start(FFont const* font_)
 
 void terminal_resize()
 {
-    columns = MAX(80, (vga_width() / font->char_width));
-    lines = MAX(25, (vga_height() / font->char_height));
+    columns = MIN(80, (vga_width() / font->char_width));
+    lines = MIN(25, (vga_height() / font->char_height));
 
     rx = (vga_width() / 2) - (columns * font->char_width / 2);
     ry = (vga_height() / 2) - (lines * font->char_height / 2);
 
-    tmt_resize(vt, columns, lines);
+    tmt_resize(vt, lines, columns);
+    terminal_clear_screen();
 }
 
 void terminal_putc(uint8_t c)
