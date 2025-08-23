@@ -31,6 +31,11 @@ void fb_delete(Framebuffer* fb)
     free(fb);
 }
 
+void fb_clear(Framebuffer* fb)
+{
+    memset(fb->data, 0, fb->w * fb->h / 2);
+}
+
 static void __attribute__((always_inline)) inline inline_draw_pixel(Framebuffer* fb, uint16_t x, uint16_t y, FColor color)
 {
     const uint32_t fb_idx = 0; // (fb->w * fb->h) >> 1;0

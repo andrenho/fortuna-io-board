@@ -10,7 +10,7 @@
   #define IN_FLASH
 #endif
 
-#include "font.h"
+#include "vga/font.h"
 
 static const FFont IN_FLASH toshiba_font = {
 

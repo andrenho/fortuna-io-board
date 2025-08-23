@@ -15,6 +15,8 @@ typedef struct Framebuffer {
 Framebuffer* fb_new(uint16_t w, uint16_t h);
 void         fb_delete(Framebuffer* fb);
 
+void         fb_clear(Framebuffer* fb);
+
 void         fb_set_pixel(Framebuffer* fb, int16_t x, int16_t y, FColor color);
 FColor       fb_get_pixel_color(Framebuffer const* fb, uint16_t x, uint16_t y);
 

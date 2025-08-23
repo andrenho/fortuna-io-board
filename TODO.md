@@ -12,11 +12,10 @@
   - [x] Location in screen
   - [x] Cursor
   - [x] Colors
-  - [ ] Curses-like
-  - [ ] Other fonts
+  - [x] Other fonts
 - [x] Write program
-  - [ ] Translate HID
-- [ ] Change resolution
+  - [x] Translate HID
+- [x] Change resolution
 - [ ] Memory available
 - [ ] SD card
 - [ ] Front panel
@@ -25,8 +24,12 @@
 
 ## Version 2.1
 
-- [ ] Alternate character set
-- [ ] Sprites
+- [ ] VGA
+  - [ ] Draw images
+  - [ ] Sprites
+- [ ] Terminal
+  - [ ] Curses-like
+  - [ ] Alternate character set
 - [ ] Dumb terminal mode with front panel settings
 - [ ] Update README.md, documentation
 

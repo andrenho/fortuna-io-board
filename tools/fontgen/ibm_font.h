@@ -12,7 +12,7 @@
 
 #include "font.h"
 
-static const Font IN_FLASH ibm_font = {
+static const FFont IN_FLASH ibm_font = {
 
     .char_width  = 8,
     .char_height = 16,

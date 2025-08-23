@@ -152,7 +152,7 @@ void terminal_start(FFont const* font_)
     font = font_;
 
     columns = MIN(80, (vga_width() / font->char_width));
-    lines = MIN(25, (vga_height() / font->char_height));
+    lines = vga_height() / font->char_height;
 
     rx = (vga_width() / 2) - (columns * font->char_width / 2);
     ry = (vga_height() / 2) - (lines * font->char_height / 2);
@@ -165,13 +165,19 @@ void terminal_start(FFont const* font_)
 void terminal_resize()
 {
     columns = MIN(80, (vga_width() / font->char_width));
-    lines = MIN(25, (vga_height() / font->char_height));
+    lines = vga_height() / font->char_height;
 
     rx = (vga_width() / 2) - (columns * font->char_width / 2);
     ry = (vga_height() / 2) - (lines * font->char_height / 2);
 
     tmt_resize(vt, lines, columns);
     terminal_clear_screen();
+}
+
+void terminal_set_font(FFont const* font_)
+{
+    font = font_;
+    terminal_resize();
 }
 
 void terminal_putc(uint8_t c)
@@ -186,6 +192,32 @@ void terminal_write(const char* str)
 
 void terminal_writef(const char* fmt, ...)
 {
+    va_list args;
+    va_start(args, fmt);
+    int sz = vsnprintf(NULL, 0, fmt, args);
+    char* buf = malloc(sz + 1);
+    vsnprintf(buf, sz + 1, fmt, args);
+    terminal_write(buf);
+    free(buf);
+    va_end(args);
+}
+
+void terminal_putc_at(uint16_t row, uint16_t column, uint8_t c)
+{
+    terminal_set_cursor(row, column);
+    terminal_putc(c);
+}
+
+void terminal_write_at(uint16_t row, uint16_t column, const char* str)
+{
+    terminal_set_cursor(row, column);
+    terminal_write(str);
+}
+
+void terminal_writef_at(uint16_t row, uint16_t column, const char* fmt, ...)
+{
+    terminal_set_cursor(row, column);
+
     va_list args;
     va_start(args, fmt);
     int sz = vsnprintf(NULL, 0, fmt, args);
@@ -256,4 +288,29 @@ uint8_t terminal_rows()
 bool terminal_active()
 {
     return vt != NULL;
+}
+
+uint16_t terminal_top_px()
+{
+    return ry;
+}
+
+uint16_t terminal_left_px()
+{
+    return rx;
+}
+
+uint16_t terminal_width_px()
+{
+    return columns * font->char_width;
+}
+
+uint16_t terminal_height_px()
+{
+    return lines * font->char_height;
+}
+
+FFont const* terminal_font()
+{
+    return font;
 }

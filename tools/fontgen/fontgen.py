@@ -36,7 +36,7 @@ def bitmap_to_cheader(image_path, cell_width, cell_height, horizontal_cells, ini
 
     # Create output header file
     base_name = os.path.splitext(os.path.basename(image_path))[0]
-    header_file = f"{base_name}_font.h"
+    header_file = f"vga/{base_name}_font.h"
 
     with open(header_file, 'w') as f:
         # Write header guards and includes

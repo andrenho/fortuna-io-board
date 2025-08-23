@@ -12,7 +12,7 @@
 
 #include "font.h"
 
-static const Font IN_FLASH fortuna_font = {
+static const FFont IN_FLASH fortuna_font = {
 
     .char_width  = 7,
     .char_height = 14,
