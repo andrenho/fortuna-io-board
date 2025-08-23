@@ -17,6 +17,7 @@
   - [x] Translate HID
 - [x] Change resolution
 - [x] Memory available
+- [ ] Bug: font seems to be using RAM
 - [ ] SD card
 - [ ] Front panel
 - [ ] Real-time clock (get/set)
@@ -27,7 +28,6 @@
 - [ ] VGA
   - [ ] Draw images
   - [ ] Sprites
-  - [ ] Bug: font seems to be using RAM
 - [ ] Terminal
   - [ ] Curses-like
   - [ ] Alternate character set

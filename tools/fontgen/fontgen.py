@@ -36,7 +36,7 @@ def bitmap_to_cheader(image_path, cell_width, cell_height, horizontal_cells, ini
 
     # Create output header file
     base_name = os.path.splitext(os.path.basename(image_path))[0]
-    header_file = f"vga/{base_name}_font.h"
+    header_file = f"{base_name}_font.h"
 
     with open(header_file, 'w') as f:
         # Write header guards and includes
@@ -49,15 +49,10 @@ def bitmap_to_cheader(image_path, cell_width, cell_height, horizontal_cells, ini
         f.write("#else\n")
         f.write("  #define IN_FLASH\n")
         f.write("#endif\n\n")
-        f.write("#include \"font.h\"\n\n")
+        f.write("#include \"vga/font.h\"\n\n")
 
-        # Write font metadata
-        f.write(f"static const FFont IN_FLASH {base_name}_font = {{\n\n")
-        f.write(f"    .char_width  = {cell_width},\n")
-        f.write(f"    .char_height = {cell_height},\n")
-        f.write(f"    .first_char  = {initial_char},\n")
-        f.write(f"    .last_char   = {initial_char + total_cells - 1},\n")
-        f.write(f"    .pixels      = (uint8_t []) {{")
+        # Write font data
+        f.write(f"static const uint8_t IN_FLASH {base_name}_font_pixels[] = {{\n")
 
         # Process each character cell
         char_index = 0
@@ -70,7 +65,7 @@ def bitmap_to_cheader(image_path, cell_width, cell_height, horizontal_cells, ini
                 char_value = initial_char + char_index
 
                 # Write character header
-                f.write(f"\n        // Character: {chr(char_value) if 32 <= char_value <= 126 else '?'} (ASCII: {char_value})\n")
+                f.write(f"\n    // Character: {chr(char_value) if 32 <= char_value <= 126 else '?'} (ASCII: {char_value})\n")
 
                 # Process each row in the cell
                 for row in range(cell_height):
@@ -96,12 +91,20 @@ def bitmap_to_cheader(image_path, cell_width, cell_height, horizontal_cells, ini
 
                     # Write byte value with visual comment
                     visual_comment = "".join(row_visual)
-                    f.write(f"        0b{byte_value:08b}, // {visual_comment}\n")
+                    f.write(f"    0b{byte_value:08b}, // {visual_comment}\n")
 
                 char_index += 1
 
         # Close the array
-        f.write("    }\n\n")
+        f.write("};\n\n")
+
+        # Write font metadata
+        f.write(f"static const FFont IN_FLASH {base_name}_font = {{\n\n")
+        f.write(f"    .char_width  = {cell_width},\n")
+        f.write(f"    .char_height = {cell_height},\n")
+        f.write(f"    .first_char  = {initial_char},\n")
+        f.write(f"    .last_char   = {initial_char + total_cells - 1},\n")
+        f.write(f"    .pixels      = {base_name}_font_pixels,\n")
         f.write("};\n\n")
 
         # Close header guard
