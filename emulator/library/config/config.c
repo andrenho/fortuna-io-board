@@ -3,17 +3,26 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Config config = {
     .zoom = 2.f,
     .nearest = false,
+    .sd_ram_sz = 64,
+    .sd_image = NULL,
+    .format = false,
 };
 
 static void print_help(const char* program)
 {
     printf("Usage: %s [OPTION]...\n", program);
     printf("Emulates the Fortuna I/O board <https://github.com/andrenho/fortuna-io-board>\n\n");
-    printf("  -h, --help            Show this help\n");
+    printf("  -z, --zoom              Video zoom (default: 2.0)\n");
+    printf("  -N, --nearest           Nearest filter (sharp pixels)\n");
+    printf("  -m, --sd-ram [SIZE]     Use SDCard image in RAM (default), with SIZE in MB (default: 64)\n");
+    printf("  -i, --sd-image [FILE]   Use FILE as SDCard image\n");
+    printf("  -F, --format            Format SDCard image upon initialization (default true for RAM disk)\n");
+    printf("  -h, --help              Show this help\n");
     exit(EXIT_SUCCESS);
 }
 
@@ -23,13 +32,16 @@ void config_load(int argc, char* argv[])
         int option_index = 0;
 
         static struct option long_options[] = {
-            { "help",    no_argument,       0, 'h' },
-            { "zoom",    required_argument, 0, 'z' },
-            { "nearest", required_argument, 0, 'N' },
+            { "help",       no_argument,       0, 'h' },
+            { "zoom",       required_argument, 0, 'z' },
+            { "sd-ram",     required_argument, 0, 'm' },
+            { "sd-image",   required_argument, 0, 'i' },
+            { "nearest",    required_argument, 0, 'N' },
+            { "format",    required_argument,  0, 'F' },
             { NULL, 0, 0, 0 },
         };
 
-        int c = getopt_long(argc, argv, "hz:N", long_options, &option_index);
+        int c = getopt_long(argc, argv, "hz:Nm:i:F", long_options, &option_index);
         if (c == -1)
             break;
 
@@ -42,6 +54,16 @@ void config_load(int argc, char* argv[])
                 break;
             case 'N':
                 config.nearest = true;
+                break;
+            case 'm':
+                config.sd_ram_sz = strtoll(optarg, NULL, 10);
+                break;
+            case 'i':
+                config.sd_image = calloc(1, strlen(optarg));
+                strcpy(config.sd_image, optarg);
+                break;
+            case 'F':
+                config.format = true;
                 break;
             case '?':
                 break;
