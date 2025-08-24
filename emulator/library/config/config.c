@@ -20,8 +20,8 @@ static void print_help(const char* program)
     printf("  -z, --zoom              Video zoom (default: 2.0)\n");
     printf("  -N, --nearest           Nearest filter (sharp pixels)\n");
     printf("  -m, --sd-ram [SIZE]     Use SDCard image in RAM (default), with SIZE in MB (default: 64)\n");
-    printf("  -i, --sd-image [FILE]   Use FILE as SDCard image\n");
-    printf("  -F, --format            Format SDCard image upon initialization (default true for RAM disk)\n");
+    printf("  -i, --sd-image [FILE]   Use FILE as SDCard image (instead of RAM)\n");
+    printf("  -F, --format            Format SDCard image upon initialization (default true for RAM disk, false for files)\n");
     printf("  -h, --help              Show this help\n");
     exit(EXIT_SUCCESS);
 }

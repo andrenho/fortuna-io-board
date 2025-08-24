@@ -14,17 +14,8 @@ static Event* event_queue = NULL;
 static size_t event_queue_sz = 0;
 static size_t event_queue_max_sz;
 
-static void prepare_sdcard()
-{
-    if (config.sd_image == NULL || config.format) {
-        BYTE work[FF_MAX_SS];
-        FRESULT res = f_mkfs("", 0, work, sizeof work);
-        if (res != RES_OK)
-            printf("Error formatting SDCard: %s\n", FRESULT_str(res));
-        else
-            printf("SDCard formatted.\n");
-    }
-}
+
+static void disk_image_initialize();   // in diskio.c
 
 void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int argc, char* argv[])
 {
@@ -34,7 +25,7 @@ void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int 
     event_queue_sz = 0;
     event_queue_max_sz = event_queue_size;
 
-    prepare_sdcard();
+    disk_image_initialize();
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 

@@ -9,15 +9,17 @@
 #include <sys/stat.h>
 
 #include "ff.h"
+#include "f_util.h"
 #include "config/config.h"
+
+#define SECTOR_SZ 512
 
 static uint8_t* data = NULL;
 static size_t   img_sz = 0;
 
-DSTATUS disk_initialize(BYTE pdrv)
+void disk_image_initialize()
 {
-	if (pdrv != 0)
-        return STA_NOINIT;
+	// create disk image
 
 	if (config.sd_image) {
 		int fd = open(config.sd_image, O_RDWR, 0);
@@ -45,6 +47,43 @@ DSTATUS disk_initialize(BYTE pdrv)
 		data = malloc(img_sz);
 	}
 
+	// format disk
+
+    if (config.sd_image == NULL || config.format) {
+        BYTE work[FF_MAX_SS];
+        FRESULT res = f_mkfs("", 0, work, sizeof work);
+        if (res != FR_OK)
+            printf("Error formatting SDCard: %s\n", FRESULT_str(res));
+        else
+            printf("SDCard formatted.\n");
+    }
+
+	// test disk
+
+    FATFS fs;
+    FRESULT res = f_mount(&fs, "", 1);
+    if (res != FR_OK)
+        printf("Error mounting SDCard: %s\n", FRESULT_str(res));
+
+	// create a sample file
+
+	FIL f;
+	if (f_open(&f, "hello.txt", FA_CREATE_NEW | FA_WRITE) == FR_OK) {
+		UINT bw;
+		f_write(&f, "Hello world!\r\n", 14, &bw);
+		f_close(&f);
+	}
+
+	// unmount
+
+	f_mount(0, "", 0);
+}
+
+DSTATUS disk_initialize(BYTE pdrv)
+{
+	if (pdrv != 0)
+        return STA_NOINIT;
+
 	return RES_OK;
 }
 
@@ -59,7 +98,7 @@ DRESULT disk_read(BYTE pdrv, BYTE* buff, LBA_t sector, UINT count)
 {
 	if (pdrv != 0)
 		return RES_PARERR;
-	memcpy(buff, &data[sector * 512], count * 512);
+	memcpy(buff, &data[sector * SECTOR_SZ], count * 512);
 	return RES_OK;
 }
 
@@ -67,7 +106,7 @@ DRESULT disk_write(BYTE pdrv, const BYTE* buff, LBA_t sector, UINT count)
 {
 	if (pdrv != 0)
 		return RES_PARERR;
-	memcpy(&data[sector * 512], buff, count * 512);
+	memcpy(&data[sector * SECTOR_SZ], buff, count * 512);
 	return RES_OK;
 }
 
@@ -79,10 +118,10 @@ DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void* buff)
 		case CTRL_SYNC:
 			return RES_OK;
 		case GET_SECTOR_COUNT:
-			*(LBA_t *) buff = img_sz / 512;
+			*(LBA_t *) buff = img_sz / SECTOR_SZ;
 			return RES_OK;
 		case GET_SECTOR_SIZE:
-			*(WORD *) buff = 512;
+			*(WORD *) buff = SECTOR_SZ;
 			return RES_OK;
 		case GET_BLOCK_SIZE:
 			*(DWORD *) buff = 4096;

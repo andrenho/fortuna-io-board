@@ -78,13 +78,32 @@ static void test_sdcard()
     FATFS fs;
     FRESULT fr = f_mount(&fs, "", 1);
     if (FR_OK != fr) {
-        terminal_write_at(sdcard_line, 16, ": \e[0;31mERROR  \e[0m");
+        terminal_write_at(sdcard_line, 16, ": \e[0;31mERROR            \e[0m");
         printf("Error mounting SDCard: %s\n", FRESULT_str(fr));
         f_unmount("");
         return;
     }
 
-    terminal_write_at(sdcard_line, 16, ": \e[1;32mSUCCESS\e[0m");
+    DIR dir;
+    fr = f_opendir(&dir, "/");
+    if (fr != FR_OK) {
+        terminal_write_at(sdcard_line, 16, ": \e[0;31mERROR            \e[0m");
+        printf("Error reading directory: %s\n", FRESULT_str(fr));
+        f_unmount("");
+        return;
+    }
+
+    size_t file_count = 0;
+    for (;;) {
+        static FILINFO fno;
+        fr = f_readdir(&dir, &fno);
+        if (fno.fname[0] == 0)
+            break;
+        ++file_count;
+    }
+    f_closedir(&dir);
+
+    terminal_writef_at(sdcard_line, 16, ": \e[1;32m%d files in root\e[0m", file_count);
 }
 
 int main(int argc, char* argv[])
