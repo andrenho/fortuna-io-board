@@ -30,6 +30,7 @@ void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
     vga_init();
+    rtc_init();
 }
 
 static MouseButton mouse_buttons()

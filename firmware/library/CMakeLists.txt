@@ -37,6 +37,7 @@ target_sources(${PROJECT_NAME} INTERFACE
 		usb/keyboard.h       usb/keyboard.c
 		usb/tusb_config.h
 		panel/panel.h        panel/panel.c
+		rtc/rtc.h            rtc/rtc.c
 		terminal/terminal.h  terminal/terminal.c
 		contrib/libtmt/tmt.h contrib/libtmt/tmt.c
 )

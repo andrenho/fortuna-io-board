@@ -39,9 +39,9 @@ static void core1_entry()
     vga_init();
     usb_init();
     panel_init();
+    rtc_init();
 
     /* TODO
-    rtc::init();
     external::init();
     audio::init();
     */

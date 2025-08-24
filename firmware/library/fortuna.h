@@ -15,6 +15,7 @@
 #include "terminal/terminal.h"
 #include "terminal/spchars.h"
 #include "panel/panel.h"
+#include "rtc/rtc.h"
 
 #include "hw_config.h"
 #include "f_util.h"
