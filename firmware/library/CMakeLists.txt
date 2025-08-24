@@ -38,6 +38,7 @@ target_sources(${PROJECT_NAME} INTERFACE
 		usb/tusb_config.h
 		panel/panel.h        panel/panel.c
 		rtc/rtc.h            rtc/rtc.c
+		audio/audio.h        audio/audio.c
 		terminal/terminal.h  terminal/terminal.c
 		contrib/libtmt/tmt.h contrib/libtmt/tmt.c
 )

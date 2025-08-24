@@ -8,12 +8,26 @@
 
 #ifdef FIRMWARE
 #   include <pico/time.h>
+#   define IN_FLASH __in_flash()
 #else
 #   include <SDL3/SDL.h>
+#   define IN_FLASH
 #endif
 
 static int sdcard_line;
 static size_t button_count = 0;
+
+static const FMusic IN_FLASH music[] = {
+    { C4, 200 },
+    { D4, 200 },
+    { E4, 200 },
+    { F4, 200 },
+    { PAUSE, 70 },
+    { F4, 70 },
+    { PAUSE, 70 },
+    { F4, 150 },
+    { PAUSE, 500 },
+};
 
 static void command(uint8_t row, uint8_t column, const char* key, const char* command, bool selected)
 {
@@ -66,6 +80,8 @@ static void draw()
     sdcard_line = y;
     command(y++, 4, "S", "SDCard", false);
     command(y++, 4, "L", "Panel LED", false);
+    command(y++, 4, "N", "Play noise", false);
+    command(y++, 4, "P", "Play music", false);
 
     // fonts
     y = top_y;
@@ -180,6 +196,8 @@ int main(int argc, char* argv[])
 
     add_clock_timer();
 
+    audio_set_music(music, sizeof(music) / sizeof music[0]);
+
     for (;;) {
         Event e;
         while (fortuna_next_event(&e)) {
@@ -223,7 +241,12 @@ int main(int argc, char* argv[])
                                 panel_set_led(led);
                                 break;
                             }
-
+                            case 'p': case 'P':
+                                audio_play_music(true);
+                                break;
+                            case 'n': case 'N':
+                                audio_play_single_note(&(FMusic) { C3, 500 });
+                                break;
                         }
                     }
                     break;

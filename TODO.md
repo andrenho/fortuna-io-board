@@ -32,14 +32,15 @@
 - [ ] Terminal
   - [ ] Curses-like
   - [ ] Alternate character set
+- [ ] Emulator
+  - [ ] SDCard in directory (not image)
+  - [ ] Create WASM version
 - [ ] Demo program: set clock
 - [ ] Dumb terminal mode with front panel settings
 - [ ] Update README.md, documentation
 
 ## Version 2.2
 
-- [ ] Emulator
-  - [ ] SDCard in directory (not image)
 - [ ] Design communication language
 - [ ] External connections
   - [ ] SPI

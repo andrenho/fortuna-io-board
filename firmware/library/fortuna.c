@@ -40,11 +40,7 @@ static void core1_entry()
     usb_init();
     panel_init();
     rtc_init();
-
-    /* TODO
-    external::init();
-    audio::init();
-    */
+    audio_init();
 
     sem_release(&semaphore);
 
