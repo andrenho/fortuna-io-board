@@ -14,23 +14,22 @@
 #include "usb/hid.h"
 #include "terminal/terminal.h"
 #include "terminal/spchars.h"
+#include "panel/panel.h"
+
 #include "hw_config.h"
 #include "f_util.h"
 #include "ff.h"
 
 #define DEFAULT_QUEUE_SIZE 64
 
-typedef enum { E_USER_PANEL, E_KEYBOARD, E_MOUSE, E_EXTERNAL } EventType;
+typedef enum { E_PANEL, E_KEYBOARD, E_MOUSE, E_EXTERNAL } EventType;
 
 typedef struct __attribute__((packed)) Event {
     EventType type     : 8;
     union {
         KeyboardEvent key;
         MouseEvent    mouse;
-        /*
-        user::Event          user;
-        external::Buffer     external;
-        */
+        PanelEvent    panel;
     };
 } Event;
 

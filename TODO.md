@@ -18,7 +18,7 @@
 - [x] Change resolution
 - [x] Memory available
 - [x] Bug: font seems to be using RAM
-- [ ] SD card
+- [x] SD card
 - [ ] Front panel
 - [ ] Real-time clock (get/set)
 - [ ] Audio

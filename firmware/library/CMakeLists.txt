@@ -26,16 +26,17 @@ add_library(${PROJECT_NAME} INTERFACE)
 #
 
 target_sources(${PROJECT_NAME} INTERFACE
-		fortuna.h			fortuna.c
+		fortuna.h			 fortuna.c
 		vga/color.h
-		vga/font.h			vga/fortuna_font.h
-		vga/vga.h 			vga/vga.c
-		vga/framebuffer.h  	vga/framebuffer.c
-		sdcard/ffconf.h     sdcard/hw_config.c
-		usb/usb.h			usb/usb.c
-		usb/mouse.h         usb/mouse.c
-		usb/keyboard.h      usb/keyboard.c
+		vga/font.h			 vga/fortuna_font.h
+		vga/vga.h 			 vga/vga.c
+		vga/framebuffer.h  	 vga/framebuffer.c
+		sdcard/ffconf.h      sdcard/hw_config.c
+		usb/usb.h			 usb/usb.c
+		usb/mouse.h          usb/mouse.c
+		usb/keyboard.h       usb/keyboard.c
 		usb/tusb_config.h
+		panel/panel.h        panel/panel.c
 		terminal/terminal.h  terminal/terminal.c
 		contrib/libtmt/tmt.h contrib/libtmt/tmt.c
 )

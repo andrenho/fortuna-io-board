@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
                         }
                     }
                     break;
-                case E_USER_PANEL:
+                case E_PANEL:
                     break;
                 case E_MOUSE:
                     break;
