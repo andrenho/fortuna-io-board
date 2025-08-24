@@ -13,6 +13,7 @@ add_library(${PROJECT_NAME} STATIC
         sdcard/ff/diskio.h      sdcard/diskio.c
         sdcard/ff/ffunicode.c
         usb/sdlhid.h            usb/sdlhid.c
+        panel/panel.h           panel/panel.c
         config/config.h         config/config.c
         terminal/terminal.h     terminal/terminal.c
         contrib/libtmt/tmt.h    contrib/libtmt/tmt.c

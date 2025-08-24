@@ -10,6 +10,7 @@
 #include "terminal/terminal.h"
 #include "framebuffer.h"
 #include "config/config.h"
+#include "panel/panel.h"
 
 static Framebuffer* fb = NULL;
 
@@ -84,12 +85,14 @@ void vga_set_mode(VgaMode mode)
 
 void vga_step()
 {
-    /*
+    extern bool panel_led;
+
     static char title[255];
-    int fps = SDL_GetPerformanceFrequency();
-    snprintf(title, sizeof title, "fortuna-io-board emulator - FPS %d", fps);
+    snprintf(title, sizeof title, "fortuna-io-board emulator (Panel: %d%d%s)",
+        panel_get_dipswitch() >> 1, panel_get_dipswitch() & 1,
+        panel_led ? " LED" : ""
+    );
     SDL_SetWindowTitle(window, title);
-    */
 
     SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderFillRect(ren, NULL);

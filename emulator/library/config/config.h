@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 typedef struct Config {
     float    zoom;
@@ -10,6 +11,7 @@ typedef struct Config {
     size_t   sd_ram_sz;
     char*    sd_image;
     bool     format;
+    uint8_t  panel;
 } Config;
 
 extern Config config;
