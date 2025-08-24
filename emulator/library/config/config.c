@@ -25,6 +25,9 @@ static void print_help(const char* program)
     printf("  -F, --format            Format SDCard image upon initialization (default true for RAM disk, false for files)\n");
     printf("  -P, --panel             Initial status of front panel DIP switches (format: 00)\n");
     printf("  -h, --help              Show this help\n");
+    printf("Shortcuts:\n");
+    printf("  CTRL + SHIFT + F10/F11  Front panel DIP switches\n");
+    printf("  CTRL + SHIFT + F12      Front panel button\n");
     exit(EXIT_SUCCESS);
 }
 

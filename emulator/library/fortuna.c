@@ -15,7 +15,7 @@ static size_t event_queue_sz = 0;
 static size_t event_queue_max_sz;
 
 
-static void disk_image_initialize();   // in diskio.c
+extern void disk_image_initialize();   // in diskio.c
 
 void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int argc, char* argv[])
 {
@@ -49,6 +49,34 @@ static void emulator_ui_events()
 {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
+
+        // user panel
+
+        if (e.type == SDL_EVENT_KEY_DOWN && (e.key.mod & SDL_KMOD_CTRL) && (e.key.mod & SDL_KMOD_SHIFT)) {
+            extern uint8_t panel_dipswitch[2];
+            if (e.key.key == SDLK_F10) {
+                panel_dipswitch[0] = !panel_dipswitch[0];
+                Event ev = { .type = E_PANEL, .panel = { .button = PB_SWITCH_0, .new_value = panel_dipswitch[0] } };
+                fortuna_add_event(&ev);
+                continue;
+            }
+            if (e.key.key == SDLK_F11) {
+                panel_dipswitch[1] = !panel_dipswitch[1];
+                Event ev = { .type = E_PANEL, .panel = { .button = PB_SWITCH_1, .new_value = panel_dipswitch[1] } };
+                fortuna_add_event(&ev);
+                continue;
+            }
+            if (e.key.key == SDLK_F12) {
+                static bool panel_button = false;
+                panel_button = !panel_button;
+                Event ev = { .type = E_PANEL, .panel = { .button = PB_PUSH_BUTTON, .new_value = panel_button } };
+                fortuna_add_event(&ev);
+                continue;
+            }
+        }
+
+        // keyboard / mouse events
+
         switch (e.type) {
             case SDL_EVENT_QUIT:
                 exit(0);
