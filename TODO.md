@@ -20,7 +20,7 @@
 - [x] Bug: font seems to be using RAM
 - [x] SD card
 - [x] Front panel
-- [ ] Real-time clock (get/set)
+- [x] Real-time clock (get/set)
 - [ ] Audio
 - [ ] Documentation
 
@@ -32,6 +32,7 @@
 - [ ] Terminal
   - [ ] Curses-like
   - [ ] Alternate character set
+- [ ] Demo program: set clock
 - [ ] Dumb terminal mode with front panel settings
 - [ ] Update README.md, documentation
 
