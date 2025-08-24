@@ -14,7 +14,7 @@
 #include "usb/hid.h"
 #include "terminal/terminal.h"
 #include "terminal/spchars.h"
-#include "../../emulator/library/sdcard/ff/hw_config.h"
+#include "hw_config.h"
 #include "f_util.h"
 #include "ff.h"
 
