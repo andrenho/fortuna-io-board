@@ -6,6 +6,12 @@
 #include "ibm_font.h"
 #include "vga_font.h"
 
+#ifdef FIRMWARE
+#   include <pico/time.h>
+#else
+#   include <SDL3/SDL.h>
+#endif
+
 static int sdcard_line;
 static size_t button_count = 0;
 
@@ -21,6 +27,13 @@ static void update_user_panel()
 {
     terminal_writef_at(terminal_rows() - 3, 3, "Panel: DIP %d%d, button presses %zu",
         panel_get_dipswitch() >> 1, panel_get_dipswitch() & 1, button_count);
+}
+
+static void update_date()
+{
+    DateTime d = rtc_get();
+    terminal_writef_at(terminal_rows() - 4, 3, "%02d/%02d/%04d %02d:%02d:%02d",
+        d.month, d.day, d.year, d.hours, d.minutes, d.seconds);
 }
 
 static void draw()
@@ -81,6 +94,7 @@ static void draw()
     terminal_writef_at(terminal_rows() - 2, 3, "%d kB free out of %d kB", fortuna_free_ram() / 1024, fortuna_total_ram() / 1024);
 
     update_user_panel();
+    update_date();
 }
 
 static void test_sdcard()
@@ -116,6 +130,36 @@ static void test_sdcard()
     terminal_writef_at(sdcard_line, 16, ": \e[1;32m%d file(s) in root\e[0m", file_count);
 }
 
+#ifdef FIRMWARE
+
+static bool timer_callback(repeating_timer_t* rt)
+{
+    (void) rt;
+    update_date();
+    return true;
+}
+
+static void add_clock_timer()
+{
+    static repeating_timer_t timer;
+    add_repeating_timer_ms(1000, timer_callback, NULL, &timer);
+}
+
+#else
+
+static Uint32 timer_callback(void *userdata, SDL_TimerID timerID, Uint32 interval)
+{
+    update_date();
+    return interval;
+}
+
+static void add_clock_timer()
+{
+    SDL_AddTimer(1000, timer_callback, NULL);
+}
+
+#endif
+
 int main(int argc, char* argv[])
 {
     fortuna_init(DEFAULT_QUEUE_SIZE, NULL, argc, argv);
@@ -133,6 +177,8 @@ int main(int argc, char* argv[])
     terminal_show_cursor(false);
 
     draw();
+
+    add_clock_timer();
 
     for (;;) {
         Event e;
