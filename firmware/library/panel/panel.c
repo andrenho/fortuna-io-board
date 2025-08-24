@@ -60,12 +60,12 @@ void panel_init_interupts()
     irq_set_enabled(IO_IRQ_BANK0, true);
 }
 
-void set_led(bool value)
+void panel_set_led(bool value)
 {
     gpio_put(LED_PIN, value);
 }
 
-uint8_t get_dipswitch()
+uint8_t panel_get_dipswitch()
 {
     uint8_t v = gpio_get(DIP1_PIN) << 1 | gpio_get(DIP0_PIN);
     return (~v) & 0b11;

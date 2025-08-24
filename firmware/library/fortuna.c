@@ -38,19 +38,17 @@ static void core1_entry()
 
     vga_init();
     usb_init();
+    panel_init();
 
     /* TODO
     rtc::init();
-    usb::init();
-    user::init();
-    vga::init();
     external::init();
     audio::init();
     */
 
     sem_release(&semaphore);
 
-    // TODO user::init_interupts();
+    panel_init_interupts();
 
     for (;;) {
         vga_step();

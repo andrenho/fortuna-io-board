@@ -19,7 +19,7 @@
 - [x] Memory available
 - [x] Bug: font seems to be using RAM
 - [x] SD card
-- [ ] Front panel
+- [x] Front panel
 - [ ] Real-time clock (get/set)
 - [ ] Audio
 - [ ] Documentation
