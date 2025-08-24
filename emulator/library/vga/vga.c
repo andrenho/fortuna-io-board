@@ -74,7 +74,7 @@ void vga_set_mode(VgaMode mode)
     convert_framebuffer_to_32();
 
     texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, w, h);
-    if (config.nearest)
+    if (config.nearest || h == 240)
         SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
 
     // adjust text matrix

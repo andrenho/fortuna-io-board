@@ -67,9 +67,7 @@ static void emulator_ui_events()
                 continue;
             }
             if (e.key.key == SDLK_F12) {
-                static bool panel_button = false;
-                panel_button = !panel_button;
-                Event ev = { .type = E_PANEL, .panel = { .button = PB_PUSH_BUTTON, .new_value = panel_button } };
+                Event ev = { .type = E_PANEL, .panel = { .button = PB_PUSH_BUTTON, .new_value = 1 } };
                 fortuna_add_event(&ev);
                 continue;
             }

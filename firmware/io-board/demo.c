@@ -7,6 +7,7 @@
 #include "vga_font.h"
 
 static int sdcard_line;
+static size_t button_count = 0;
 
 static void command(uint8_t row, uint8_t column, const char* key, const char* command, bool selected)
 {
@@ -14,6 +15,12 @@ static void command(uint8_t row, uint8_t column, const char* key, const char* co
     terminal_writef("[\e[30;42m %s \e[0m] %s", key, command);
     if (selected)
         terminal_write(" (*)");
+}
+
+static void update_user_panel()
+{
+    terminal_writef_at(terminal_rows() - 3, 3, "Panel: DIP %d%d, button presses %zu",
+        panel_get_dipswitch() >> 1, panel_get_dipswitch() & 1, button_count);
 }
 
 static void draw()
@@ -45,6 +52,7 @@ static void draw()
     terminal_write_at(y++, 3, "\e[4;37mOther:\e[0m");
     sdcard_line = y;
     command(y++, 4, "S", "SDCard", false);
+    command(y++, 4, "L", "Panel LED", false);
 
     // fonts
     y = top_y;
@@ -71,6 +79,8 @@ static void draw()
 
     // memory
     terminal_writef_at(terminal_rows() - 2, 3, "%d kB free out of %d kB", fortuna_free_ram() / 1024, fortuna_total_ram() / 1024);
+
+    update_user_panel();
 }
 
 static void test_sdcard()
@@ -161,10 +171,20 @@ int main(int argc, char* argv[])
                             case 's': case 'S':
                                 test_sdcard();
                                 break;
+                            case 'l': case 'L': {
+                                static bool led = false;
+                                led = !led;
+                                panel_set_led(led);
+                                break;
+                            }
+
                         }
                     }
                     break;
                 case E_PANEL:
+                    if (e.panel.button == PB_PUSH_BUTTON)
+                        ++button_count;
+                    update_user_panel();
                     break;
                 case E_MOUSE:
                     break;
