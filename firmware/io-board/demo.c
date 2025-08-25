@@ -245,7 +245,7 @@ int main(int argc, char* argv[])
                                 audio_play_music(false);
                                 break;
                             case 'n': case 'N':
-                                audio_play_single_note(&(FMusic) { C3, 500 });
+                                audio_play_single_note(&(FMusic) { C4, 500 });
                                 break;
                         }
                     }

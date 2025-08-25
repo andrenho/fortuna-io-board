@@ -4,7 +4,9 @@
 
 #include "SDL3/SDL.h"
 
-#define SAMPLE_RATE   16000
+#define MIN(a, b) ((a)<(b)?(a):(b))
+
+#define SAMPLE_RATE   44000
 #define AMPLITUDE     32767
 
 static bool audio_ok = false;
@@ -41,14 +43,20 @@ void audio_step()
     if (current_note.note == PAUSE)
         return;
 
+    // samples per update
+    size_t samples_per_update = (double) SAMPLE_RATE / ((double) current_note.note / 1000.f) / 4.f;
+    static size_t phase = 0;
+
     // generate next 20ms of square wave
-    const int minimum_audio = (SAMPLE_RATE * sizeof (float)) / 2;
+    const int minimum_audio = (SAMPLE_RATE * sizeof (int8_t)) / 2;
     if (SDL_GetAudioStreamQueued(stream) < minimum_audio) {
         static float samples[512];
         int i;
 
-        for (i = 0; i < SDL_arraysize(samples); i++) {
-            samples[i] = (i % 2) ? 100 : -100;
+        bool swap = true;
+        for (i = 0; i < SDL_arraysize(samples);) {
+            memset(&samples[i], swap ? 100 : -100, MIN(samples_per_update, SDL_arraysize(samples) - i));
+            i += samples_per_update;
         }
 
         SDL_PutAudioStreamData(stream, samples, sizeof (samples));

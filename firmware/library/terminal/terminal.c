@@ -120,7 +120,8 @@ static bool redraw_char_on_cursor(TMT* vt)
     blink_on = !blink_on;
     const TMTPOINT *cu = tmt_cursor(vt);
     const TMTSCREEN *s = tmt_screen(vt);
-    draw_char(cu->r, cu->c, s->lines[cu->r]->chars[cu->c], cu);
+    if (cu->r < s->nline && cu->c < s->ncol)
+        draw_char(cu->r, cu->c, s->lines[cu->r]->chars[cu->c], cu);
     return vt != NULL;
 }
 
