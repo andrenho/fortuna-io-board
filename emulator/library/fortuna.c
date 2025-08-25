@@ -16,6 +16,7 @@ static size_t event_queue_max_sz;
 
 
 extern void disk_image_initialize();   // in diskio.c
+extern void audio_step();              // in audio.c
 
 void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int argc, char* argv[])
 {
@@ -146,6 +147,7 @@ bool fortuna_next_event(Event* event)
 {
     // execute subsystems
     vga_step();
+    audio_step();
 
     // check SDL events
     emulator_ui_events();

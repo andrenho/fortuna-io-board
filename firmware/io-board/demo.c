@@ -80,7 +80,7 @@ static void draw()
     sdcard_line = y;
     command(y++, 4, "S", "SDCard", false);
     command(y++, 4, "L", "Panel LED", false);
-    command(y++, 4, "N", "Play noise", false);
+    command(y++, 4, "N", "Play single note", false);
     command(y++, 4, "P", "Play music", false);
 
     // fonts
@@ -242,7 +242,7 @@ int main(int argc, char* argv[])
                                 break;
                             }
                             case 'p': case 'P':
-                                audio_play_music(true);
+                                audio_play_music(false);
                                 break;
                             case 'n': case 'N':
                                 audio_play_single_note(&(FMusic) { C3, 500 });

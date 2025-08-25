@@ -10,5 +10,12 @@
     <mapping directory="$USER_HOME$/pico-sdk/lib/mbedtls/tf-psa-crypto" vcs="Git" />
     <mapping directory="$USER_HOME$/pico-sdk/lib/mbedtls/tf-psa-crypto/framework" vcs="Git" />
     <mapping directory="$USER_HOME$/pico-sdk/lib/tinyusb" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emulator/cmake-build-debug/_deps/raylib-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emulator/library/contrib/fatfs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emulator/library/contrib/libtmt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/firmware/cmake-build-debug/_deps/picotool-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/firmware/io-board/cmake-build-debug/_deps/picotool-src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/firmware/library/contrib/libtmt" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/firmware/library/contrib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico" vcs="Git" />
   </component>
 </project>
