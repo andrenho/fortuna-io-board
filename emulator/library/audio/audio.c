@@ -80,9 +80,14 @@ static Uint32 play_next_note(void *userdata, SDL_TimerID timerID, Uint32 interva
         }
     }
 
+    if (SDL_GetAudioStreamQueued(stream) > 500000)
+        return 500; // queue is too full - try again in 500ms
+
     audio_play_single_note(&music[current_note]);
 
     ++current_note;
+    if (current_note >= music_sz)
+        return 1;
 
     return music[current_note].time;  // prepare to play next note
 }
