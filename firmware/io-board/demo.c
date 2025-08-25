@@ -242,10 +242,10 @@ int main(int argc, char* argv[])
                                 break;
                             }
                             case 'p': case 'P':
-                                audio_play_music(false);
+                                audio_play_music(true);
                                 break;
                             case 'n': case 'N':
-                                audio_play_single_note(&(FMusic) { C4, 500 });
+                                audio_play_single_note(&(FMusic) { C3, 500 });
                                 break;
                         }
                     }

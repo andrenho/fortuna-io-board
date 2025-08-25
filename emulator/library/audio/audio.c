@@ -1,19 +1,23 @@
 #include "audio.h"
 
 #include <float.h>
+#include <stdlib.h>
 
 #include "SDL3/SDL.h"
 
 #define MIN(a, b) ((a)<(b)?(a):(b))
 
 #define SAMPLE_RATE   44000
-#define AMPLITUDE     32767
+#define AMPLITUDE     50
 
 static bool audio_ok = false;
+static FMusic* music = nullptr;
+static size_t  music_sz = 0;
+static size_t  current_note = 0;
+static bool    music_nonstop = false;
+static bool    music_playing = false;
 
 static SDL_AudioStream* stream;
-
-static FMusic current_note = { PAUSE, 0 };
 
 void audio_init()
 {
@@ -35,47 +39,70 @@ void audio_play_single_note(FMusic const* sound)
     if (!audio_ok)
         return;
 
-    current_note = *sound;
-}
+    size_t n_samples = (double) SAMPLE_RATE * ((double) sound->time / 1000.f);
+    int8_t samples[n_samples];
 
-void audio_step()
-{
-    if (current_note.note == PAUSE)
-        return;
+    if (sound->note == PAUSE) {
+        memset(samples, 0, n_samples);
 
-    // samples per update
-    size_t samples_per_update = (double) SAMPLE_RATE / ((double) current_note.note / 1000.f) / 4.f;
+    } else {
+        size_t half_period_samples = (double) SAMPLE_RATE / ((double) sound->note / 1000.f) / 4.f;
 
-    // generate next 20ms of square wave
-    const int minimum_audio = (SAMPLE_RATE * sizeof (int8_t)) / 2;
-    if (SDL_GetAudioStreamQueued(stream) < minimum_audio) {
-        static float samples[512];
-        int i;
-
+        // generate wave for next note
         bool swap = true;
-        for (i = 0; i < SDL_arraysize(samples);) {
-            memset(&samples[i], swap ? 100 : -100, MIN(samples_per_update, SDL_arraysize(samples) - i));
-            i += samples_per_update;
+        for (size_t i = 0; i < SDL_arraysize(samples);) {
+            memset(&samples[i], swap ? AMPLITUDE : -AMPLITUDE, MIN(half_period_samples, SDL_arraysize(samples) - i));
+            swap = !swap;
+            i += half_period_samples;
         }
-
-        SDL_PutAudioStreamData(stream, samples, sizeof (samples));
     }
+    SDL_PutAudioStreamData(stream, samples, sizeof (samples));
 }
 
 void audio_set_music(FMusic const* sounds, size_t sz)
 {
     if (!audio_ok)
         return;
+
+    music = (FMusic *) realloc(music, sz * sizeof(FMusic));
+    memcpy(music, sounds, sz * sizeof(FMusic));
+    music_sz = sz;
+}
+
+static Uint32 play_next_note(void *userdata, SDL_TimerID timerID, Uint32 interval)
+{
+    if (current_note >= music_sz) {
+        if (music_nonstop) {
+            current_note = 0;
+        } else {
+            music_playing = false;
+            return 0;   // disable timer
+        }
+    }
+
+    audio_play_single_note(&music[current_note]);
+
+    ++current_note;
+
+    return music[current_note].time;  // prepare to play next note
 }
 
 void audio_play_music(bool nonstop)
 {
     if (!audio_ok)
         return;
+
+    music_nonstop = nonstop;
+    current_note = 0;
+    music_playing = true;
+    SDL_AddTimer(1, play_next_note, NULL);
 }
 
 void audio_stop_music()
 {
     if (!audio_ok)
         return;
+
+    music_playing = false;
+    current_note = 0;
 }
