@@ -22,6 +22,7 @@
 - [x] Front panel
 - [x] Real-time clock (get/set)
 - [x] Audio
+  - [x] Fix audio in board
 - [ ] Documentation
 
 ## Version 2.1
