@@ -23,7 +23,7 @@
 - [x] Real-time clock (get/set)
 - [x] Audio
   - [x] Fix audio in board
-- [ ] Documentation
+- [x] Documentation
 
 ## Version 2.1
 

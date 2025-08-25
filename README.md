@@ -33,19 +33,35 @@ Possible variations:
  * Any of these modules, except for the Pico Pi 2 and the Power, are optional.
  * A Pico Pi (not W) can be used instead, if wireless is not needed.
 
-[Download PDF](schematic/fortuna-io-board.pdf)
+[Download PDF](schematic/pi-pico-vga.pdf)
 
 ## Using it in a project
 
-Look at `example/CMakeLists.txt` and `example/demo.cc` for an example on how to import and use the library.
+Look at `firmware/io-board/CMakeLists.txt` and `firmware/io-board/demo.c` for an example on how to import and use the library.
 
 ## Building the demo
 
 To build the demo:
 
 ```shell
-mkdir -p example/build
-cd example/build
+mkdir -p firmware/io-board/build
+cd firmware/io-board/build
 cmake -DPICO_SDK_PATH=~/pico-sdk -DPICOTOOL_FETCH_FROM_GIT_PATH=~/picotool -DPICO_BOARD=pico2 ..   # replace with your directories
 make
 ```
+
+# Emulator
+
+![Emulator](photos/emulator.png)
+
+An emulator can be used to test the implementation without having to upload it to the board. To build the emulator:
+
+```shell
+mkdir -p emulator/build
+cd emulator/build
+cmake ..
+make
+```
+
+The same code that is uploaded to the board can also be used to compile the emulator. Look at `emulator/io-board/demo.c`,
+which is just a link to the firmware implementation.
