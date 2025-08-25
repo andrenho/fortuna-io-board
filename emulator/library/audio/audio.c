@@ -45,7 +45,6 @@ void audio_step()
 
     // samples per update
     size_t samples_per_update = (double) SAMPLE_RATE / ((double) current_note.note / 1000.f) / 4.f;
-    static size_t phase = 0;
 
     // generate next 20ms of square wave
     const int minimum_audio = (SAMPLE_RATE * sizeof (int8_t)) / 2;
