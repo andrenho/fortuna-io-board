@@ -21,7 +21,7 @@
 - [x] SD card
 - [x] Front panel
 - [x] Real-time clock (get/set)
-- [ ] Audio
+- [x] Audio
 - [ ] Documentation
 
 ## Version 2.1
