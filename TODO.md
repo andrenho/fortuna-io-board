@@ -29,6 +29,8 @@
 
 - [ ] VGA
   - [ ] Draw images
+    - [ ] Create palette and converter
+    - [ ] Transparency
   - [ ] Sprites
 - [ ] Terminal
   - [ ] Curses-like
@@ -47,6 +49,11 @@
   - [ ] SPI
   - [ ] 4-pin
   - [ ] emulator
+
+## Version 2.3
+
+- [ ] Improve audio system
+- [ ] Compressed images
 
 --------------------------------------------
 
