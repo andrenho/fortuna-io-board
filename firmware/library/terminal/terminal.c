@@ -31,11 +31,14 @@ static bool         show_cursor_ = true;
 #   define IN_FLASH
 #endif
 
-/*
-static const char* IN_FLASH alt_charset = {
-    0x1a, 0x1b, 0x18, 0x19, 0xfe, 0x04, 0xb1, 0xf8,
+static const wchar_t IN_FLASH alt_charset[] = {
+    C_ARROW_RIGHT, C_ARROW_LEFT, C_ARROW_UP, C_ARROW_DOWN,
+    0xdb, C_DIAMOND, C_SHADE_MEDIUM, C_DEGREE, C_PLUS_MINUS, C_SHADE_DARK,
+    C_BOX_SINGLE_DOWN_RIGHT, C_BOX_SINGLE_UP_RIGHT, C_BOX_SINGLE_UP_LEFT, C_BOX_SINGLE_DOWN_LEFT,
+    C_BOX_SINGLE_VERT_HORIZ, C_BOX_SINGLE_HORIZ, C_BOX_SINGLE_HORIZ,  C_BOX_SINGLE_HORIZ,  C_BOX_SINGLE_HORIZ, '_',
+    C_BOX_SINGLE_LEFT_T, C_BOX_SINGLE_RIGHT_T, C_BOTTOM_T, C_TOP_T, C_BOX_SINGLE_VERT, '<', '>', 0xe3,
+    0xf8, 0x9b, 0xfa
 };
-*/
 
 static FColor translate_color(tmt_color_t color, bool bold, bool is_bg)
 {
@@ -55,7 +58,7 @@ static FColor translate_color(tmt_color_t color, bool bold, bool is_bg)
         case TMT_COLOR_CYAN:
             return bold ? C_CYAN : C_SKY_BLUE;
         case TMT_COLOR_WHITE:
-            return C_WHITE;
+            return bold ? C_PINK : C_WHITE;
         default:
             return is_bg ? C_BLACK : C_WHITE;
     }
@@ -81,7 +84,12 @@ static void draw_char(uint16_t row, uint16_t column, TMTCHAR c, TMTPOINT const* 
     if (c.a.invisible)
         fg_color = bg_color;
 
+    if (c.a.dim)
+        fg_color = C_DARK_GREEN;
+
     fb_draw_character_bg(vga_framebuffer(), x, y, font, c.c, bg_color, fg_color);
+    // if (c.a.bold)
+    //    fb_draw_character(vga_framebuffer(), x+1, y, font, c.c, fg_color);
 
     if (c.a.underline)
         fb_draw_line(vga_framebuffer(), x, y + font->char_height - 2, x + font->char_width, y + font->char_height - 2, fg_color);
@@ -162,7 +170,7 @@ void terminal_start(FFont const* font_)
     rx = (vga_width() / 2) - (columns * font->char_width / 2);
     ry = (vga_height() / 2) - (lines * font->char_height / 2);
 
-    vt = tmt_open(lines, columns, callback, NULL, NULL);
+    vt = tmt_open(lines, columns, callback, NULL, alt_charset);
 
     add_blink_timer();
 }

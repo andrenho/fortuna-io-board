@@ -84,8 +84,21 @@ static void draw()
     sdcard_line = y;
     command(y++, 4, "S", "SDCard", false);
     command(y++, 4, "L", "Panel LED", false);
-    command(y++, 4, "N", "Play single note", false);
-    command(y++, 4, "P", "Play music", false);
+    if (vga_height() == 480) {
+        command(y++, 4, "N", "Play single note", false);
+        command(y++, 4, "P", "Play music", false);
+    }
+
+    // font formatting
+    if (vga_height() == 480) {
+        y = 13;
+        terminal_write_at(y++, 36, "\e[4;37mFormatting\e[0m");
+        terminal_write_at(y++, 36, " \e[1;31mColor\e[0m");
+        terminal_write_at(y++, 36, " \e[7;37mReverse\e[0m");
+        terminal_write_at(y++, 36, " \e[1;37mBold\e[0m");
+        terminal_write_at(y++, 36, " \e[2;37mFaint\e[0m");
+    }
+
 
     // fonts
     y = top_y;

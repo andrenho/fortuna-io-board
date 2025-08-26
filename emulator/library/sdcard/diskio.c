@@ -12,6 +12,8 @@
 #include "f_util.h"
 #include "config/config.h"
 
+#include "rtc/rtc.h"
+
 #define SECTOR_SZ 512
 
 static uint8_t* data = NULL;
@@ -132,6 +134,11 @@ DRESULT disk_ioctl(BYTE pdrv, BYTE cmd, void* buff)
 
 DWORD get_fattime(void)
 {
-	// TODO
-	return 0;
+	DateTime time = rtc_get();
+	return (DWORD)(time.year - 1980) << 25 |
+           (DWORD)time.month << 21 |
+           (DWORD)time.day << 16 |
+           (DWORD)time.hours << 11 |
+           (DWORD)time.minutes << 5 |
+           (DWORD)time.seconds >> 1;
 }

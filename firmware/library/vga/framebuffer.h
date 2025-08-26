@@ -30,6 +30,7 @@ void         fb_fill_area(Framebuffer* fb, uint16_t x, uint16_t y, FColor color)
 void         fb_move_screen_up(Framebuffer* fb, uint16_t lines, FColor fill_color);
 
 void         fb_draw_character_bg(Framebuffer* fb, uint16_t x, uint16_t y, FFont const* font, uint8_t ch, FColor bg_color, FColor fg_color);
+void         fb_draw_character_bg_dim(Framebuffer* fb, uint16_t x, uint16_t y, FFont const* font, uint8_t ch, FColor bg_color, FColor fg_color);
 void         fb_draw_character(Framebuffer* fb, uint16_t x, uint16_t y, FFont const* font, uint8_t ch, FColor fg_color);
 
 FFont const* fb_default_font();

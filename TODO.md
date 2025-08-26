@@ -31,9 +31,8 @@
   - [x] Draw images
     - [x] Create palette and converter
     - [x] Transparency
-- [ ] Terminal
-  - [ ] Curses-like
-  - [ ] Alternate character set
+- [x] Terminal
+  - [x] Alternate character set
 - [ ] Emulator
   - [ ] SDCard in directory (not image)
   - [ ] Create WASM version
