@@ -6,6 +6,8 @@
 #include "ibm_font.h"
 #include "vga_font.h"
 
+#include "mario.h"
+
 #ifdef FIRMWARE
 #   include <pico/time.h>
 #   define IN_FLASH __in_flash()
@@ -48,6 +50,8 @@ static void update_date()
     DateTime d = rtc_get();
     terminal_writef_at(terminal_rows() - 4, 3, "%02d/%02d/%04d %02d:%02d:%02d",
         d.month, d.day, d.year, d.hours, d.minutes, d.seconds);
+
+    fb_draw_image(vga_framebuffer(), mario_image, vga_width() - 141, vga_height() - 90);
 }
 
 static void draw()

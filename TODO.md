@@ -27,11 +27,10 @@
 
 ## Version 2.1
 
-- [ ] VGA
-  - [ ] Draw images
-    - [ ] Create palette and converter
-    - [ ] Transparency
-  - [ ] Sprites
+- [x] VGA
+  - [x] Draw images
+    - [x] Create palette and converter
+    - [x] Transparency
 - [ ] Terminal
   - [ ] Curses-like
   - [ ] Alternate character set
@@ -52,6 +51,7 @@
 
 ## Version 2.3
 
+- [ ] Sprites
 - [ ] Improve audio system
 - [ ] Compressed images
 

@@ -384,3 +384,38 @@ FFont const* fb_default_font()
 {
     return &fortuna_font;
 }
+
+bool fb_draw_image(Framebuffer* fb, uint8_t const* image, uint16_t x, uint16_t y)
+{
+#define NO_TRANSPARENCY 0xff
+#define IMG_START 8
+
+    if (image[0] != 0xf0 || image[1] != 0x34 || image[2] != 0x01)
+        return false;
+
+    uint8_t transparent_color = image[3];
+    uint16_t w = image[4] | (image[5] << 8);
+    uint16_t h = image[6] | (image[7] << 8);
+
+    if ((x & 1) == 0 && transparent_color == NO_TRANSPARENCY) {
+        for (int m = 0; m < h; ++m) {
+            const int pixel = ((fb->w * (y + m)) + x);
+            memcpy(&fb->data[pixel>>1], &image[m * (w >> 1) + IMG_START], w >> 1);
+        }
+    } else {
+        for (int m = 0; m < h; ++m) {
+            for (int n = 0; n < w; n += 2) {
+                const uint32_t idx = (((m * w) + n) >> 1) + IMG_START;
+                FColor color1 = (FColor) (image[idx] & 0xf);
+                FColor color2 = (FColor) ((image[idx] >> 4) & 0xf);
+                if (transparent_color != color1)
+                    inline_draw_pixel(fb, x + n, y + m, color1);
+                if (transparent_color != color2)
+                    inline_draw_pixel(fb, x + n + 1, y + m, color2);
+            }
+        }
+    }
+
+    return true;
+
+}

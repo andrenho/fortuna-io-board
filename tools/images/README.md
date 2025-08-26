@@ -8,8 +8,8 @@ procedure.
 The image format is as this:
 
 F0 34 -- magic number
-01    -- image version
-00    -- compression type (0 = uncompressed)
+01    -- image version (determines also compression type)
+xx    -- transparent color (or FF for no transparency)
 xx xx -- image width, in pixels
 xx xx -- image height, in pixels
-..... -- the image pixels
+..... -- the image pixels (2 pixels per byte)

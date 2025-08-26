@@ -36,7 +36,7 @@ FFont const* fb_default_font();
 
 void         fb_resize(Framebuffer* fb, uint16_t w, uint16_t h);
 
-// void         fb_draw_image(Image const& image, uint16_t x, uint16_t y, uint8_t framebuffer=0);
+bool         fb_draw_image(Framebuffer* fb, uint8_t const* image, uint16_t x, uint16_t y);
 
 
 // void fb_setup(ScreenMode mode);

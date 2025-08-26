@@ -7,7 +7,11 @@ from PIL import Image
 def convert_image(path):
     img = Image.open(path)
     w, h = img.size
-    pixels = [0xf0, 0x34, 0x01, 0x00, w & 0xff, w >> 8, h & 0xff, h >> 8]
+    transp = 0xff
+    if "transparency" in img.info:
+        transp = img.info["transparency"]
+
+    pixels = []
     for y in range(h):
         for x in range(w):
             pixels.append(img.getpixel((x, y)))
@@ -25,11 +29,12 @@ def convert_image(path):
 
         # Write image data
         f.write(f"static const uint8_t IN_FLASH {basename}_image[] = {{\n")
-        for i in range(len(pixels)):
-            if i % 16 == 0:
+        f.write(f"    0xf0, 0x34, 0x01, 0x{transp:02x}, 0x{(w & 0xff):02x}, 0x{(w >> 8):02x}, 0x{(h & 0xff):02x}, 0x{(h >> 8):02x},\n")
+        for i in range(0, len(pixels), 2):
+            if i % 32 == 0:
                 f.write("    ")
-            f.write(f"0x{pixels[i]:02x}, ")
-            if i % 16 == 15:
+            f.write(f"0x{pixels[i+1]:01x}{pixels[i]:01x}, ")
+            if i % 32 == 30:
                 f.write("\n")
         f.write("};\n\n")
         f.write("#endif\n")
