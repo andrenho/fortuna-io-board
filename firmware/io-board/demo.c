@@ -54,6 +54,12 @@ static void update_date()
     fb_draw_image(vga_framebuffer(), mario_image, vga_width() - 141, vga_height() - 90);
 }
 
+static void set_clock()
+{
+    terminal_write_at(terminal_rows() - 4, 3, "__/__/____ __:__");
+
+}
+
 static void draw()
 {
     // main box
@@ -88,6 +94,9 @@ static void draw()
         command(y++, 4, "N", "Play single note", false);
         command(y++, 4, "P", "Play music", false);
     }
+    ++y;
+    terminal_write_at(y++, 3, "Use CTRL+key or CTRL+SHIFT+key");
+    terminal_write_at(y++, 3, "to adjust the clock.");
 
     // font formatting
     if (vga_height() == 480) {
@@ -193,6 +202,51 @@ static void add_clock_timer()
 
 #endif
 
+static bool keypresses_for_clock_adjustment(KeyboardEvent k)
+{
+    bool up = k.ctrl && !k.shift;
+    bool down = k.ctrl && k.shift;
+
+    if (!up && !down)
+        return false;
+
+    DateTime d;
+    switch (k.chr) {
+        case 'y': case 'Y':
+            d = rtc_get();
+            up ? ++d.year : --d.year;
+            rtc_set(d);
+            update_date();
+            return true;
+        case 'm': case 'M':
+            d = rtc_get();
+            up ? ++d.month: --d.month;
+            rtc_set(d);
+            update_date();
+            return true;
+        case 'd': case 'D':
+            d = rtc_get();
+            up ? ++d.day : --d.day;
+            rtc_set(d);
+            update_date();
+            return true;
+        case 'h': case 'H':
+            d = rtc_get();
+            up ? ++d.hours : --d.hours;
+            rtc_set(d);
+            update_date();
+            return true;
+        case 'n': case 'N':
+            d = rtc_get();
+            up ? ++d.minutes : --d.minutes;
+            d.seconds = 0;
+            rtc_set(d);
+            update_date();
+            return true;
+    }
+    return false;
+}
+
 int main(int argc, char* argv[])
 {
     fortuna_init(DEFAULT_QUEUE_SIZE, NULL, argc, argv);
@@ -223,6 +277,9 @@ int main(int argc, char* argv[])
                 case E_KEYBOARD:
                     if (e.key.pressed) {
                         printf("Key pressed -- HID 0x%02X, char 0x%02X (%c)\n", e.key.hid_key, e.key.chr, e.key.chr);
+                        keypresses_for_clock_adjustment(e.key);
+                        if (e.key.ctrl)
+                            continue;
                         switch (e.key.hid_key) {
                             case HID_KEY_F1:
                                 vga_set_mode(V_640x480); draw();

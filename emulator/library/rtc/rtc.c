@@ -27,7 +27,15 @@ DateTime rtc_get()
     };
 }
 
-void rtc_set(DateTime datetime)
+void rtc_set(DateTime d)
 {
-    // TODO
+    struct tm t = {
+        .tm_year = d.year - 1900,
+        .tm_mon = d.month - 1,
+        .tm_mday = d.day,
+        .tm_hour = d.hours - 1,
+        .tm_min = d.minutes,
+        .tm_sec = d.seconds,
+    };
+    initial_time = mktime(&t) - (SDL_GetTicks() / 1000);
 }

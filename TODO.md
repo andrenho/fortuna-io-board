@@ -35,7 +35,6 @@
   - [x] Alternate character set
 - [x] Emulator
   - [x] SDCard image file
-  - [ ] Create WASM version
 - [ ] Demo program: set clock
 - [ ] Dumb terminal mode with front panel settings
 - [ ] Update README.md, documentation
@@ -53,6 +52,10 @@
 - [ ] Sprites
 - [ ] Improve audio system
 - [ ] Compressed images
+- [ ] Merge master
+
+## Version 2.4
+- [ ] Create WASM version, auto-generate WASM page
 
 --------------------------------------------
 
