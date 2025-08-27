@@ -73,7 +73,7 @@ DateTime rtc_get()
     return (DateTime) {};
 }
 
-void set(DateTime d)
+void rtc_set(DateTime d)
 {
     uint8_t data[] = {
         0,
