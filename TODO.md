@@ -35,7 +35,7 @@
   - [x] Alternate character set
 - [x] Emulator
   - [x] SDCard image file
-- [ ] Demo program: set clock
+- [x] Demo program: set clock
 - [ ] Dumb terminal mode with front panel settings
 - [ ] Update README.md, documentation
 
