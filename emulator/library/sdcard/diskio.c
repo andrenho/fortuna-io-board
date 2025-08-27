@@ -69,12 +69,14 @@ void disk_image_initialize()
 
 	// create a sample file
 
-	FIL f;
-	if (f_open(&f, "hello.txt", FA_CREATE_NEW | FA_WRITE) == FR_OK) {
-		UINT bw;
-		f_write(&f, "Hello world!\r\n", 14, &bw);
-		f_close(&f);
-	}
+    if (config.sd_image == NULL || config.format) {
+	    FIL f;
+    	if (f_open(&f, "hello.txt", FA_CREATE_NEW | FA_WRITE) == FR_OK) {
+    		UINT bw;
+    		f_write(&f, "Hello world!\r\n", 14, &bw);
+    		f_close(&f);
+    	}
+    }
 
 	// unmount
 

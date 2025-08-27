@@ -69,3 +69,5 @@ which is just a link to the firmware implementation.
 To create a disk image to use in the emulator, use the script `/tools/sdcard/create_image.sh`. To manage the disk image
 (copy files to it, etc), the disk image needs to be mounted. In Linux, do 
 `mount -o loop MY_IMAGE MOUNT_POINT`; in Mac, do `hdiutil attach MY_IMAGE` and access it through Finder.
+
+(Macs needs to have `dosfstools` installed to use the `create_image.sh` script)
