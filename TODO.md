@@ -33,8 +33,8 @@
     - [x] Transparency
 - [x] Terminal
   - [x] Alternate character set
-- [ ] Emulator
-  - [ ] SDCard in directory (not image)
+- [x] Emulator
+  - [x] SDCard image file
   - [ ] Create WASM version
 - [ ] Demo program: set clock
 - [ ] Dumb terminal mode with front panel settings
