@@ -1,6 +1,7 @@
 #include "fortuna.h"
 
 #include <pico.h>
+#include <contrib/libtmt/tmt.h>
 
 static void on_uart_rx()
 {
@@ -31,12 +32,83 @@ void terminal()
     for (;;) {
         Event e;
         while (fortuna_next_event(&e)) {
-            if (e.type == E_KEYBOARD) {
-                if (e.key.chr != 0 && e.key.pressed) {
-                    // TODO - treat CTRL, SHIFT, special keys, etc
-                    while (!uart_is_writable(uart0))
-                        ;
-                    uart_putc_raw(uart0, e.key.chr);
+            if (e.type == E_KEYBOARD && e.key.pressed) {
+                while (!uart_is_writable(uart0))
+                    ;
+                switch (e.key.hid_key) {
+                    case HID_KEY_ARROW_UP:
+                        uart_puts(uart0, TMT_KEY_UP);
+                        break;
+                    case HID_KEY_ARROW_DOWN:
+                        uart_puts(uart0, TMT_KEY_DOWN);
+                        break;
+                    case HID_KEY_ARROW_RIGHT:
+                        uart_puts(uart0, TMT_KEY_RIGHT);
+                        break;
+                    case HID_KEY_ARROW_LEFT:
+                        uart_puts(uart0, TMT_KEY_LEFT);
+                        break;
+                    case HID_KEY_HOME:
+                        uart_puts(uart0, TMT_KEY_HOME);
+                        break;
+                    case HID_KEY_END:
+                        uart_puts(uart0, TMT_KEY_END);
+                        break;
+                    case HID_KEY_INSERT:
+                        uart_puts(uart0, TMT_KEY_INSERT);
+                        break;
+                    case HID_KEY_BACKSPACE:
+                        uart_puts(uart0, TMT_KEY_BACKSPACE);
+                        break;
+                    case HID_KEY_TAB:
+                        uart_puts(uart0, TMT_KEY_BACK_TAB);
+                        break;
+                    case HID_KEY_PAGE_UP:
+                        uart_puts(uart0, TMT_KEY_PAGE_UP);
+                        break;
+                    case HID_KEY_PAGE_DOWN:
+                        uart_puts(uart0, TMT_KEY_PAGE_UP);
+                        break;
+                    case HID_KEY_F1:
+                        uart_puts(uart0, TMT_KEY_F1);
+                        break;
+                    case HID_KEY_F2:
+                        uart_puts(uart0, TMT_KEY_F2);
+                        break;
+                    case HID_KEY_F3:
+                        uart_puts(uart0, TMT_KEY_F3);
+                        break;
+                    case HID_KEY_F4:
+                        uart_puts(uart0, TMT_KEY_F4);
+                        break;
+                    case HID_KEY_F5:
+                        uart_puts(uart0, TMT_KEY_F5);
+                        break;
+                    case HID_KEY_F6:
+                        uart_puts(uart0, TMT_KEY_F6);
+                        break;
+                    case HID_KEY_F7:
+                        uart_puts(uart0, TMT_KEY_F7);
+                        break;
+                    case HID_KEY_F8:
+                        uart_puts(uart0, TMT_KEY_F8);
+                        break;
+                    case HID_KEY_F9:
+                        uart_puts(uart0, TMT_KEY_F9);
+                        break;
+                    case HID_KEY_F10:
+                        uart_puts(uart0, TMT_KEY_F10);
+                        break;
+                    case HID_KEY_ENTER:
+                    case HID_KEY_RETURN:
+                        uart_putc(uart0, '\r');
+                        break;
+                    default:
+                        if (e.key.chr != 0) {
+                            // TODO - treat CTRL, SHIFT, special keys, etc
+                            uart_putc_raw(uart0, e.key.chr);
+                        }
+                        break;
                 }
             }
         }
