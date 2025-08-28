@@ -34,7 +34,6 @@ void fortuna_init(uint16_t event_queue_size_, void(* core1_step_function_)(), in
 static void core1_entry()
 {
     stdio_uart_init();
-    printf("==============================================================\n");
 
     vga_init();
     usb_init();

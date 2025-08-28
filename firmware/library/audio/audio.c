@@ -59,7 +59,6 @@ static void audio_play_sound(FMusic const* sound)
         pwm_set_wrap(slice_no, top);
         pwm_set_chan_level(slice_no, channel, top / 2);
         pwm_set_enabled(slice_no, true);
-        printf("X\n");
     }
 }
 

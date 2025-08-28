@@ -315,8 +315,6 @@ void vga_init()
     address_pointer = &fb->data[0];
 
     initialize_pio();
-
-    printf("VGA initialized.\n");
 }
 
 void vga_step()

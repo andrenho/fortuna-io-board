@@ -11,8 +11,6 @@ void usb_init()
     board_init();
     tusb_init();
     board_led_write(true);
-
-    printf("USB initialized.\n");
 }
 
 void usb_step()
@@ -50,7 +48,7 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
         mouse_init(dev_addr, instance);
 
     if (!tuh_hid_receive_report(dev_addr, instance)) {
-        printf("Error: cannot request to receive report\r\n");
+        // printf("Error: cannot request to receive report\r\n");
     }
 }
 

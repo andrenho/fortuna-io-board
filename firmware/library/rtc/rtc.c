@@ -26,7 +26,7 @@ static void read_ds1307_and_upload_to_pico()
     i2c_write_blocking(i2c, DS1307_ADDR, &addr_read, 1, false);
     i2c_read_blocking(i2c, DS1307_ADDR, data, 7, true);
 
-    printf("Datetime received from DS1307: %02X %02X %02X %02X %02X %02X %02X\n", data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
+    // printf("Datetime received from DS1307: %02X %02X %02X %02X %02X %02X %02X\n", data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
 
     // set pico RTC
     struct tm t = {
@@ -88,7 +88,7 @@ void rtc_set(DateTime d)
 
     // read device id
     i2c_write_blocking(i2c, DS1307_ADDR, data, 8, true);
-    printf("Datetime sent to DS1307: %02X %02X %02X %02X %02X %02X %02X\n", data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
+    // printf("Datetime sent to DS1307: %02X %02X %02X %02X %02X %02X %02X\n", data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
 
     read_ds1307_and_upload_to_pico();
 }
