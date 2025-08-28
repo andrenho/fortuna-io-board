@@ -1,7 +1,6 @@
 #include "fortuna.h"
 
-/*
-#include <pico.h>
+#include <../../library/pico/pico.h>
 #include <pico/util/queue.h>
 #include <contrib/libtmt/tmt.h>
 
@@ -34,7 +33,7 @@ void terminal()
     // enable interrupts
     irq_set_exclusive_handler(UART0_IRQ, on_uart_rx);
     irq_set_enabled(UART0_IRQ, true);
-    uart_set_irq_enables(uart0, true, false);
+    uart_set_irqs_enabled(uart0, true, false);
 
     for (;;) {
         char ch;
@@ -112,7 +111,7 @@ void terminal()
                         break;
                     case HID_KEY_ENTER:
                     case HID_KEY_RETURN:
-                        uart_putc(uart0, '\r');
+                        uart_putc_raw(uart0, '\r');
                         break;
                     default:
                         if (e.key.chr != 0) {
@@ -126,5 +125,3 @@ void terminal()
     }
 
 }
-*/
-void terminal() {}
