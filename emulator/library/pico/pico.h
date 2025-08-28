@@ -33,6 +33,7 @@ void uart_puts (uart_inst_t *uart, const char *s);
 void uart_putc_raw (uart_inst_t *uart, char c);
 char uart_getc (uart_inst_t *uart);
 bool uart_is_readable (uart_inst_t *uart);
+void uart_step();
 
 //
 // IRQ

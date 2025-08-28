@@ -4,7 +4,6 @@
 #include <string.h>
 #include <malloc/malloc.h>
 
-#include "diskio.h"
 #include "SDL3/SDL.h"
 
 #include "usb/sdlhid.h"
@@ -16,6 +15,7 @@ static size_t event_queue_max_sz;
 
 
 extern void disk_image_initialize();   // in diskio.c
+extern void uart_step();
 
 void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int argc, char* argv[])
 {
@@ -145,6 +145,8 @@ static void emulator_ui_events()
 
 bool fortuna_next_event(Event* event)
 {
+    uart_step();
+
     // execute subsystems
     vga_step();
 
