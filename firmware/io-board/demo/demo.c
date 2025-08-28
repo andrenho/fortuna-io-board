@@ -8,18 +8,12 @@
 
 #include "mario.h"
 
-#ifdef FIRMWARE
-#   include <pico/time.h>
-#   define IN_FLASH __in_flash()
-#else
-#   include <SDL3/SDL.h>
-#   define IN_FLASH
-#endif
+#include <pico/time.h>
 
 static int sdcard_line;
 static size_t button_count = 0;
 
-static const FMusic IN_FLASH music[] = {
+static const FMusic __in_flash() music[] = {
     { C4, 200 },
     { D4, 200 },
     { E4, 200 },
@@ -172,8 +166,6 @@ static void test_sdcard()
     terminal_writef_at(sdcard_line, 16, ": \e[1;32m%d file(s) in root\e[0m", file_count);
 }
 
-#ifdef FIRMWARE
-
 static bool timer_callback(repeating_timer_t* rt)
 {
     (void) rt;
@@ -186,21 +178,6 @@ static void add_clock_timer()
     static repeating_timer_t timer;
     add_repeating_timer_ms(1000, timer_callback, NULL, &timer);
 }
-
-#else
-
-static Uint32 timer_callback(void *userdata, SDL_TimerID timerID, Uint32 interval)
-{
-    update_date();
-    return interval;
-}
-
-static void add_clock_timer()
-{
-    SDL_AddTimer(1000, timer_callback, NULL);
-}
-
-#endif
 
 static bool keypresses_for_clock_adjustment(KeyboardEvent k)
 {

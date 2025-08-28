@@ -19,6 +19,7 @@ add_library(${PROJECT_NAME} STATIC
         config/config.h         config/config.c
         terminal/terminal.h     terminal/terminal.c
         contrib/libtmt/tmt.h    contrib/libtmt/tmt.c
+        pico.h                  pico/pico.c
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

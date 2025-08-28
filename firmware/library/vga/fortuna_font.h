@@ -3,16 +3,10 @@
 
 #include <stdint.h>
 
-#ifdef FIRMWARE
-  #include <pico.h>
-  #define IN_FLASH __in_flash()
-#else
-  #define IN_FLASH
-#endif
-
+#include <pico.h>
 #include "vga/font.h"
 
-static const uint8_t IN_FLASH fortuna_font_pixels[] = {
+static const uint8_t __in_flash() fortuna_font_pixels[] = {
 
     // Character: ? (ASCII: 0)
     0b00000000, // .......
@@ -4111,7 +4105,7 @@ static const uint8_t IN_FLASH fortuna_font_pixels[] = {
     0b00000000, // .......
 };
 
-static const FFont IN_FLASH fortuna_font = {
+static const FFont __in_flash() fortuna_font = {
 
     .char_width  = 7,
     .char_height = 14,

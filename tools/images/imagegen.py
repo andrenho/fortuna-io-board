@@ -20,15 +20,10 @@ def convert_image(path):
         f.write(f"#ifndef {basename.upper()}_IMAGE_H\n")
         f.write(f"#define {basename.upper()}_IMAGE_H\n\n")
         f.write("#include <stdint.h>\n\n")
-        f.write("#ifdef FIRMWARE\n")
-        f.write("  #include <pico.h>\n")
-        f.write("  #define IN_FLASH __in_flash()\n")
-        f.write("#else\n")
-        f.write("  #define IN_FLASH\n")
-        f.write("#endif\n\n")
+        f.write("#include <pico.h>\n")
 
         # Write image data
-        f.write(f"static const uint8_t IN_FLASH {basename}_image[] = {{\n")
+        f.write(f"static const uint8_t __in_flash() {basename}_image[] = {{\n")
         f.write(f"    0xf0, 0x34, 0x01, 0x{transp:02x}, 0x{(w & 0xff):02x}, 0x{(w >> 8):02x}, 0x{(h & 0xff):02x}, 0x{(h >> 8):02x},\n")
         for i in range(0, len(pixels), 2):
             if i % 32 == 0:

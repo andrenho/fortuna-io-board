@@ -43,16 +43,11 @@ def bitmap_to_cheader(image_path, cell_width, cell_height, horizontal_cells, ini
         f.write(f"#ifndef {base_name.upper()}_FONT_H\n")
         f.write(f"#define {base_name.upper()}_FONT_H\n\n")
         f.write("#include <stdint.h>\n\n")
-        f.write("#ifdef FIRMWARE\n")
-        f.write("  #include <pico.h>\n")
-        f.write("  #define IN_FLASH __in_flash()\n")
-        f.write("#else\n")
-        f.write("  #define IN_FLASH\n")
-        f.write("#endif\n\n")
+        f.write("#include <pico.h>\n")
         f.write("#include \"vga/font.h\"\n\n")
 
         # Write font data
-        f.write(f"static const uint8_t IN_FLASH {base_name}_font_pixels[] = {{\n")
+        f.write(f"static const uint8_t __in_flash() {base_name}_font_pixels[] = {{\n")
 
         # Process each character cell
         char_index = 0
@@ -99,7 +94,7 @@ def bitmap_to_cheader(image_path, cell_width, cell_height, horizontal_cells, ini
         f.write("};\n\n")
 
         # Write font metadata
-        f.write(f"static const FFont IN_FLASH {base_name}_font = {{\n\n")
+        f.write(f"static const FFont __in_flash() {base_name}_font = {{\n\n")
         f.write(f"    .char_width  = {cell_width},\n")
         f.write(f"    .char_height = {cell_height},\n")
         f.write(f"    .first_char  = {initial_char},\n")

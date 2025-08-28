@@ -1,5 +1,6 @@
 #include "fortuna.h"
 
+/*
 #include <pico.h>
 #include <pico/util/queue.h>
 #include <contrib/libtmt/tmt.h>
@@ -125,3 +126,5 @@ void terminal()
     }
 
 }
+*/
+void terminal() {}

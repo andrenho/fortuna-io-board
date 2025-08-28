@@ -23,15 +23,9 @@ static bool         show_cursor_ = true;
 
 #define BLINK_TIMER_MS 500
 
-#ifdef FIRMWARE
-#   include <pico/time.h>
-#   define IN_FLASH __in_flash()
-#else
-#   include <SDL3/SDL.h>
-#   define IN_FLASH
-#endif
+#include <pico/time.h>
 
-static const wchar_t IN_FLASH alt_charset[] = {
+static const wchar_t __in_flash() alt_charset[] = {
     C_ARROW_RIGHT, C_ARROW_LEFT, C_ARROW_UP, C_ARROW_DOWN,
     0xdb, C_DIAMOND, C_SHADE_MEDIUM, C_DEGREE, C_PLUS_MINUS, C_SHADE_DARK,
     C_BOX_SINGLE_DOWN_RIGHT, C_BOX_SINGLE_UP_RIGHT, C_BOX_SINGLE_UP_LEFT, C_BOX_SINGLE_DOWN_LEFT,
@@ -133,8 +127,6 @@ static bool redraw_char_on_cursor(TMT* vt)
     return vt != NULL;
 }
 
-#ifdef FIRMWARE
-
 static bool timer_callback(repeating_timer_t* rt)
 {
     return redraw_char_on_cursor(* (TMT**) rt->user_data);
@@ -145,20 +137,6 @@ static void add_blink_timer()
     static repeating_timer_t timer;
     add_repeating_timer_ms(BLINK_TIMER_MS, timer_callback, &vt, &timer);
 }
-
-#else
-
-static Uint32 timer_callback(void *userdata, SDL_TimerID timerID, Uint32 interval)
-{
-    return redraw_char_on_cursor(* (TMT**) userdata) ? BLINK_TIMER_MS : 0;
-}
-
-static void add_blink_timer()
-{
-    SDL_AddTimer(BLINK_TIMER_MS, timer_callback, &vt);
-}
-
-#endif
 
 void terminal_start(FFont const* font_)
 {
