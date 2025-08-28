@@ -37,6 +37,8 @@
   - [x] SDCard image file
 - [x] Demo program: set clock
 - [x] Dumb terminal mode with front panel settings
+  - [ ] Make it work on the emulator
+  - [ ] Single array for keys
   - [ ] Add special keys
   - [ ] Edit UART configuration, change font, etc (write configuration on startup)
   - [ ] Respond with columns/lines size (and terminal type?)

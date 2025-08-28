@@ -71,7 +71,7 @@ void terminal()
                         uart_puts(uart0, TMT_KEY_BACKSPACE);
                         break;
                     case HID_KEY_TAB:
-                        uart_puts(uart0, TMT_KEY_BACK_TAB);
+                        uart_puts(uart0, "\t");
                         break;
                     case HID_KEY_PAGE_UP:
                         uart_puts(uart0, TMT_KEY_PAGE_UP);
