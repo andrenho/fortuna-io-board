@@ -247,16 +247,8 @@ static bool keypresses_for_clock_adjustment(KeyboardEvent k)
     return false;
 }
 
-int main(int argc, char* argv[])
+void demo()
 {
-    fortuna_init(DEFAULT_QUEUE_SIZE, NULL, argc, argv);
-
-    // fixating points (used to calibrate the monitor)
-    fb_set_pixel(vga_framebuffer(), 0, 0, C_NAVY_BLUE);
-    fb_set_pixel(vga_framebuffer(), 0, vga_height() - 1, C_NAVY_BLUE);
-    fb_set_pixel(vga_framebuffer(), vga_width() - 1, 0, C_NAVY_BLUE);
-    fb_set_pixel(vga_framebuffer(), vga_width() - 1, vga_height() - 1, C_NAVY_BLUE);
-
     // mouse
     vga_show_pointer(true);
 

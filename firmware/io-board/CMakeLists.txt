@@ -13,7 +13,9 @@ add_subdirectory(../library build)
 add_compile_options(-O3)
 
 add_executable(${CMAKE_PROJECT_NAME}
-        demo.c)
+        main.c
+        demo/demo.c
+        terminal/terminal.c)
 
 target_include_directories(${CMAKE_PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 

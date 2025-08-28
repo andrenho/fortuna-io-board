@@ -37,6 +37,7 @@
   - [x] SDCard image file
 - [x] Demo program: set clock
 - [ ] Dumb terminal mode with front panel settings
+  - [ ] Determine UART format
 - [ ] Update README.md, documentation
 
 ## Version 2.2
