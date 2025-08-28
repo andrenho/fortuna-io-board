@@ -32,6 +32,7 @@ void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int 
     vga_init();
     rtc_init();
     audio_init();
+    panel_init();
 }
 
 static MouseButton mouse_buttons()

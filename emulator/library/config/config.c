@@ -73,9 +73,9 @@ void config_load(int argc, char* argv[])
                 break;
             case 'P':
                 if (optarg[0] == '1')
-                    config.panel = 0b01;
+                    config.panel = 0b10;
                 if (strlen(optarg) > 1 && optarg[1] == '1')
-                    config.panel |= 0b10;
+                    config.panel |= 0b01;
                 break;
             case '?':
                 break;

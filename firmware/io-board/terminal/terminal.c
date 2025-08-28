@@ -1,13 +1,17 @@
 #include "fortuna.h"
 
 #include <pico.h>
+#include <pico/util/queue.h>
 #include <contrib/libtmt/tmt.h>
+
+#define MAX_QUEUE_SIZE (16 * 1024)
+static queue_t ch_queue;
 
 static void on_uart_rx()
 {
     while (uart_is_readable(uart0)) {
         char ch = uart_getc(uart0);
-        terminal_putc(ch);
+        queue_try_add(&ch_queue, &ch);
     }
 }
 
@@ -15,6 +19,8 @@ void terminal()
 {
     terminal_start(fb_default_font());
     terminal_write("Fortuna I/O Board - VT200 terminal emulator via UART\r\n");
+
+    queue_init(&ch_queue, sizeof(char), MAX_QUEUE_SIZE);
 
     gpio_set_function(0, UART_FUNCSEL_NUM(uart0, 0));
     gpio_set_function(1, UART_FUNCSEL_NUM(uart0, 1));
@@ -30,6 +36,10 @@ void terminal()
     uart_set_irq_enables(uart0, true, false);
 
     for (;;) {
+        char ch;
+        if (queue_try_remove(&ch_queue, &ch))
+            terminal_putc(ch);
+
         Event e;
         while (fortuna_next_event(&e)) {
             if (e.type == E_KEYBOARD && e.key.pressed) {
