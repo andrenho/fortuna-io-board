@@ -36,8 +36,15 @@
 - [x] Emulator
   - [x] SDCard image file
 - [x] Demo program: set clock
-- [ ] Dumb terminal mode with front panel settings
-  - [ ] Determine UART format
+- [x] Dumb terminal mode with front panel settings
+  - [ ] Add special keys
+  - [ ] Edit UART configuration, change font, etc (write configuration on startup)
+  - [ ] Respond with columns/lines size (and terminal type?)
+  - [ ] Make terminal faster by caching fonts
+  - [ ] Make advanced stuff work
+    - [ ] vim
+    - [ ] mc
+    - [ ] nethack
 - [ ] Update README.md, documentation
 
 ## Version 2.2
