@@ -19,7 +19,7 @@ add_library(${PROJECT_NAME} STATIC
         config/config.h         config/config.c
         terminal/terminal.h     terminal/terminal.c
         contrib/libtmt/tmt.h    contrib/libtmt/tmt.c
-        pico/pico.h             pico/pico.c
+        pico.h                  pico.c
         pico/time.h             pico/time.c
         pico/util/queue.h       pico/util/queue.c
 )

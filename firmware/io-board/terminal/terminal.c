@@ -1,6 +1,6 @@
 #include "fortuna.h"
 
-#include <../../library/pico/pico.h>
+#include <pico.h>
 #include <pico/util/queue.h>
 #include <contrib/libtmt/tmt.h>
 
@@ -11,6 +11,8 @@ static void on_uart_rx()
 {
     while (uart_is_readable(uart0)) {
         char ch = uart_getc(uart0);
+        if (ch == 0)
+            break;
         queue_try_add(&ch_queue, &ch);
     }
 }

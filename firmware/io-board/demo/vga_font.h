@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include <../../../emulator/library/pico/pico.h>
+#include <pico.h>
 #include "vga/font.h"
 
 static const uint8_t __in_flash() vga_font_pixels[] = {

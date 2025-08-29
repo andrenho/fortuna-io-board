@@ -1,7 +1,7 @@
 #ifndef PICO_TIME_H_
 #define PICO_TIME_H_
 
-#include "pico.h"
+#include "../pico.h"
 
 #include <SDL3/SDL_timer.h>
 
