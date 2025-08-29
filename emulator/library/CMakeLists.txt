@@ -31,5 +31,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         "${raylib_SOURCE_DIR}/src"
 )
 #target_compile_definitions(${PROJECT_NAME} PUBLIC TMT_HAS_WCWIDTH)
-target_compile_definitions(${PROJECT_NAME} PUBLIC TMT_INVALID_CHAR='?' TMT_HAS_WCWIDTH)
+target_compile_definitions(${PROJECT_NAME} PUBLIC TMT_INVALID_CHAR='?')
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)

@@ -2,9 +2,13 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+
 #ifdef __APPLE__
 #include <malloc/malloc.h>
 #endif
+
+#include <locale.h>
 
 #include "SDL3/SDL.h"
 
@@ -21,6 +25,14 @@ extern void uart_step();
 
 void fortuna_init(uint16_t event_queue_size, void (*core1_step_function)(), int argc, char* argv[])
 {
+#ifndef __APPLE__
+    setlocale(LC_CTYPE, "en_US.ISO8859-1");
+    if (strcmp(setlocale(LC_CTYPE, NULL), "en_US.ISO8859-1") != 0) {
+        fprintf(stderr, "Cannot set locale en_US.ISO8859-1. Current locale is '%s'. Text might be garbled.",
+            setlocale(LC_CTYPE, NULL));
+    }
+#endif
+
     config_load(argc, argv);
 
     event_queue = calloc(sizeof(Event), event_queue_size);

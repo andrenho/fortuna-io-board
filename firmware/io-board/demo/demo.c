@@ -227,27 +227,7 @@ static bool keypresses_for_clock_adjustment(KeyboardEvent k)
 
 void demo()
 {
-    printf("locale=%s\n", setlocale(LC_CTYPE, NULL));
-
-    uint8_t b = 200;          // raw byte
-    char buf[1];
-    buf[0] = (char)b;         // copy into a char buffer
-
-    wchar_t wc;
-    mbstate_t st = {0};
-
-    size_t n = mbrtowc(&wc, buf, 1, &st);
-    printf("n=%zu wc=%#x\n", n, (unsigned)wc);
-
-    terminal_start(fb_default_font());
-    terminal_putc('.');
-    terminal_putc(C_BOX_DOUBLE_HORIZ);
-    terminal_putc(C_BOX_DOUBLE_HORIZ);
-    terminal_putc('.');
-    for (;;) {
-        Event e;
-        fortuna_next_event(&e);
-    }
+    // printf("locale=%s\n", setlocale(LC_CTYPE, NULL));
 
     // mouse
     vga_show_pointer(true);
