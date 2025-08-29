@@ -138,7 +138,7 @@ static void on_uart_rx()
 void terminal()
 {
     terminal_start(fb_default_font());
-    terminal_write("Fortuna I/O Board - VT200 terminal emulator via UART\r\n");
+    terminal_write("Fortuna I/O Board - VT220 terminal emulator via UART\r\n");
 
     queue_init(&ch_queue, sizeof(char), MAX_QUEUE_SIZE);
 
@@ -180,7 +180,29 @@ skip:
                             goto skip;
                         }
                     }
+                } else if (e.key.ctrl && !e.key.shift) {
+                    for (size_t i = 0; i < sizeof hid_strings_ctrl / sizeof hid_strings_ctrl[0]; ++i) {
+                        if (e.key.hid_key == hid_strings_ctrl[i].hid) {
+                            uart_puts(uart0, hid_strings_ctrl[i].str);
+                            goto skip;
+                        }
+                    }
+                } else if (e.key.ctrl && e.key.shift) {
+                    for (size_t i = 0; i < sizeof hid_strings_ctrl_shift / sizeof hid_strings_ctrl_shift[0]; ++i) {
+                        if (e.key.hid_key == hid_strings_ctrl_shift[i].hid) {
+                            uart_puts(uart0, hid_strings_ctrl_shift[i].str);
+                            goto skip;
+                        }
+                    }
+                } else if (!e.key.ctrl && e.key.shift) {
+                    for (size_t i = 0; i < sizeof hid_strings_shift / sizeof hid_strings_shift[0]; ++i) {
+                        if (e.key.hid_key == hid_strings_shift[i].hid) {
+                            uart_puts(uart0, hid_strings_shift[i].str);
+                            goto skip;
+                        }
+                    }
                 }
+
                 if (e.key.chr != 0) {
                     if (e.key.ctrl) {
                         if (e.key.chr >= 'A' && e.key.chr <= '_')
