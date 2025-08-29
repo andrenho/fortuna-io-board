@@ -37,16 +37,18 @@
   - [x] SDCard image file
 - [x] Demo program: set clock
 - [x] Dumb terminal mode with front panel settings
-  - [ ] Make it work on the emulator
-  - [ ] Single array for keys
+  - [x] Make it work on the emulator
+  - [x] Single array for keys
   - [ ] Add special keys
   - [ ] Edit UART configuration, change font, etc (write configuration on startup)
   - [ ] Respond with columns/lines size (and terminal type?)
   - [ ] Make terminal faster by caching fonts
+  - [ ] Bell
   - [ ] Make advanced stuff work
     - [ ] vim
     - [ ] mc
     - [ ] nethack
+  - [ ] Terminal connection not working very well on linux
 - [ ] Update README.md, documentation
 
 ## Version 2.2
