@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdio.h>
+#include <locale.h>
 
 #include "fortuna.h"
 #include "toshiba_font.h"
@@ -226,6 +227,18 @@ static bool keypresses_for_clock_adjustment(KeyboardEvent k)
 
 void demo()
 {
+    setlocale(LC_CTYPE, "C");
+
+    terminal_start(fb_default_font());
+    terminal_putc('.');
+    terminal_putc(C_BOX_DOUBLE_HORIZ);
+    terminal_putc(C_BOX_DOUBLE_HORIZ);
+    terminal_putc('.');
+    for (;;) {
+        Event e;
+        fortuna_next_event(&e);
+    }
+
     // mouse
     vga_show_pointer(true);
 
