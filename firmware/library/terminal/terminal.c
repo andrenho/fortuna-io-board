@@ -185,7 +185,12 @@ void terminal_writef(const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-    int sz = vsnprintf(NULL, 0, fmt, args);
+
+    va_list args_copy;
+    va_copy(args_copy, args);
+    int sz = vsnprintf(NULL, 0, fmt, args_copy);
+    va_end(args_copy);
+
     char* buf = malloc(sz + 1);
     vsnprintf(buf, sz + 1, fmt, args);
     terminal_write(buf);
@@ -211,7 +216,12 @@ void terminal_writef_at(uint16_t row, uint16_t column, const char* fmt, ...)
 
     va_list args;
     va_start(args, fmt);
-    int sz = vsnprintf(NULL, 0, fmt, args);
+
+    va_list args_copy;
+    va_copy(args_copy, args);
+    int sz = vsnprintf(NULL, 0, fmt, args_copy);
+    va_end(args_copy);
+
     char* buf = malloc(sz + 1);
     vsnprintf(buf, sz + 1, fmt, args);
     terminal_write(buf);

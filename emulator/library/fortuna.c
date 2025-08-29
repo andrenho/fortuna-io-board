@@ -2,7 +2,9 @@
 
 #include <stdlib.h>
 #include <string.h>
+#ifdef __APPLE__
 #include <malloc/malloc.h>
+#endif
 
 #include "SDL3/SDL.h"
 
