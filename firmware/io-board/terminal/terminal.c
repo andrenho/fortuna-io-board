@@ -39,7 +39,91 @@ static const HidString __in_flash() hid_strings[] = {
     { HID_KEY_F10,         TMT_KEY_F10 },
     { HID_KEY_F11,         "\e[23~" },
     { HID_KEY_F12,         "\e[24~" },
+    { HID_KEY_ESCAPE,      "\e" },
 };
+
+static const HidString __in_flash() hid_strings_ctrl[] = {
+    { HID_KEY_ARROW_UP,    "\e[1;5A" },
+    { HID_KEY_ARROW_DOWN,  "\e[1;5B" },
+    { HID_KEY_ARROW_RIGHT, "\e[1;5C" },
+    { HID_KEY_ARROW_LEFT,  "\e[1;5D" },
+    { HID_KEY_HOME,        "\e[1;5H" },
+    { HID_KEY_END,         "\e[1;5F" },
+    { HID_KEY_INSERT,      "\e[2;5~" },
+    { HID_KEY_BACKSPACE,   "\b" },
+    { HID_KEY_TAB,         "\t" },
+    { HID_KEY_PAGE_UP,     "\e[5;5~" },
+    { HID_KEY_PAGE_DOWN,   "\e[6;5~" },
+    { HID_KEY_F1,          "\e[1;5P" },
+    { HID_KEY_F2,          "\e[1;5Q" },
+    { HID_KEY_F3,          "\e[1;5R" },
+    { HID_KEY_F4,          "\e[1;5S" },
+    { HID_KEY_F5,          "\e[15;5~" },
+    { HID_KEY_F6,          "\e[17;5~" },
+    { HID_KEY_F7,          "\e[18;5~" },
+    { HID_KEY_F8,          "\e[19;5~" },
+    { HID_KEY_F9,          "\e[20;5~" },
+    { HID_KEY_F10,         "\e[21;5~" },
+    { HID_KEY_F11,         "\e[23;5~" },
+    { HID_KEY_F12,         "\e[24;5~" },
+    { HID_KEY_ESCAPE,      "\e" },
+};
+
+static const HidString __in_flash() hid_strings_shift[] = {
+    { HID_KEY_ARROW_UP,    "\e[1;2A" },
+    { HID_KEY_ARROW_DOWN,  "\e[1;2B" },
+    { HID_KEY_ARROW_RIGHT, "\e[1;2C" },
+    { HID_KEY_ARROW_LEFT,  "\e[1;2D" },
+    { HID_KEY_HOME,        "\e[1;2H" },
+    { HID_KEY_END,         "\e[1;2F" },
+    { HID_KEY_INSERT,      "\e[2;5~" },  // TODO
+    { HID_KEY_BACKSPACE,   "\x7f" },
+    { HID_KEY_TAB,         "\e[Z" },
+    { HID_KEY_PAGE_UP,     TMT_KEY_PAGE_UP },  // TODO
+    { HID_KEY_PAGE_DOWN,   TMT_KEY_PAGE_DOWN },
+    { HID_KEY_F1,          "\e[1;2P" },
+    { HID_KEY_F2,          "\e[1;2Q" },
+    { HID_KEY_F3,          "\e[1;2R" },
+    { HID_KEY_F4,          "\e[1;2S" },
+    { HID_KEY_F5,          "\e[15;2~" },
+    { HID_KEY_F6,          "\e[17;2~" },
+    { HID_KEY_F7,          "\e[18;2~" },
+    { HID_KEY_F8,          "\e[19;2~" },
+    { HID_KEY_F9,          "\e[20;2~" },
+    { HID_KEY_F10,         "\e[21;2~" },
+    { HID_KEY_F11,         "\e[23;2~" },
+    { HID_KEY_F12,         "\e[24;2~" },
+    { HID_KEY_ESCAPE,      "\e" },
+};
+
+
+static const HidString __in_flash() hid_strings_ctrl_shift[] = {
+    { HID_KEY_ARROW_UP,    "\e[1;6A" },
+    { HID_KEY_ARROW_DOWN,  "\e[1;6B" },
+    { HID_KEY_ARROW_RIGHT, "\e[1;6C" },
+    { HID_KEY_ARROW_LEFT,  "\e[1;6D" },
+    { HID_KEY_HOME,        "\e[1;6H" },
+    { HID_KEY_END,         "\e[1;6F" },
+    { HID_KEY_INSERT,      "\e[2;6~" },
+    { HID_KEY_BACKSPACE,   "\b" },
+    { HID_KEY_TAB,         "\t" },
+    { HID_KEY_PAGE_UP,     "\e[5;6~" },
+    { HID_KEY_PAGE_DOWN,   "\e[6;6~" },
+    { HID_KEY_F1,          "\e[1;6P" },
+    { HID_KEY_F2,          "\e[1;6Q" },
+    { HID_KEY_F3,          "\e[1;6R" },
+    { HID_KEY_F4,          "\e[1;6S" },
+    { HID_KEY_F5,          "\e[15;6~" },
+    { HID_KEY_F6,          "\e[17;6~" },
+    { HID_KEY_F7,          "\e[18;6~" },
+    { HID_KEY_F8,          "\e[19;6~" },
+    { HID_KEY_F9,          "\e[20;6~" },
+    { HID_KEY_F10,         "\e[21;6~" },
+    { HID_KEY_F11,         "\e[23;6~" },
+    { HID_KEY_F12,         "\e[24;6~" },
+    { HID_KEY_ESCAPE,      "\e" },
+};
+
 
 static void on_uart_rx()
 {
